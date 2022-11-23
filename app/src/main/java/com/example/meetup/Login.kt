@@ -77,6 +77,9 @@ fun Login (navController: NavController)
                             ) {
                                 Text(text = "Login")
                             }
+                            Button(onClick = { navController.navigate(Screen.ActivityRegister.route) }) {
+                                Text(text = "Register")
+                            }
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }

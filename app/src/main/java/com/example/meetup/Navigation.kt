@@ -29,6 +29,11 @@ fun Navigation() {
         ) {
             entry -> MainScreen(entry.arguments?.getString("login"))
         }
+        composable(route = Screen.ActivityRegister.route) {
+            ActivityRegister(navController = navController)
+        }
+
+        // Add new composable with route which is path to a screen and optionally arguments as above
     }
 }
 
