@@ -1,6 +1,7 @@
 package com.example.meetup
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -8,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -35,53 +38,70 @@ fun Login (navController: NavController)
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Scaffold() {
+
+        Box(modifier = Modifier.fillMaxSize())
+        {
+            Image(
+                painter = painterResource(id = R.drawable.background_image),
+                contentDescription = "Background image for meetup",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds
+            )
             Card(
-                        modifier = Modifier
-                            .padding(horizontal = 40.dp, vertical = 150.dp)
-                            .fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            ),
-                        shape = MaterialTheme.shapes.extraLarge
-                    ) {
+                modifier = Modifier
+                    .padding(top = 130.dp)
+                    .padding(horizontal = 40.dp)
+                    .fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
+                shape = MaterialTheme.shapes.extraLarge
+            ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(10.dp)
                 ) {
                     TextField(
                         value = username,
                         onValueChange = { newText -> username = newText },
                         label = { Text(text = "Username", fontSize = TEXT_FONT_SIZE.sp) },
                         singleLine = true,
-                        placeholder = { Text(text = "Enter your username", fontSize = TEXT_FONT_SIZE.sp) },
+                        placeholder = {
+                            Text(
+                                text = "Enter your username",
+                                fontSize = TEXT_FONT_SIZE.sp
+                            )
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                            .padding(horizontal = 10.dp, vertical = 10.dp),
                         textStyle = TextStyle(fontSize = TEXT_FONT_SIZE.sp),
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(10.dp)
                 ) {
                     TextField(
                         value = password,
                         onValueChange = { password = it },
                         label = { Text(text = "Password", fontSize = TEXT_FONT_SIZE.sp) },
                         singleLine = true,
-                        placeholder = { Text(text = "Enter your password", fontSize = TEXT_FONT_SIZE.sp) },
+                        placeholder = {
+                            Text(
+                                text = "Enter your password",
+                                fontSize = TEXT_FONT_SIZE.sp
+                            )
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                            .padding(horizontal = 10.dp, vertical = 10.dp),
                         textStyle = TextStyle(fontSize = TEXT_FONT_SIZE.sp),
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     )
                 }
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(10.dp)
                 ) {
-                    Spacer(modifier = Modifier.height(8.dp))
                     Button(
                         onClick = {
                             navController.navigate(
@@ -89,7 +109,10 @@ fun Login (navController: NavController)
                             )
                         },
                         modifier = Modifier
-                            .padding(horizontal = BUTTON_HORIZONTAL_PADDING.dp, vertical = 10.dp)
+                            .padding(
+                                horizontal = BUTTON_HORIZONTAL_PADDING.dp,
+                                vertical = 10.dp
+                            )
                             .fillMaxWidth()
                             .height(BUTTON_HEIGHT.dp)
                     ) {
@@ -97,7 +120,7 @@ fun Login (navController: NavController)
                     }
                     Column(
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(10.dp)
                             .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -112,13 +135,15 @@ fun Login (navController: NavController)
                             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                         ),
                         modifier = Modifier
-                            .padding(horizontal = BUTTON_HORIZONTAL_PADDING.dp, vertical = 10.dp)
+                            .padding(
+                                horizontal = BUTTON_HORIZONTAL_PADDING.dp,
+                                vertical = 10.dp
+                            )
                             .fillMaxWidth()
                             .height(BUTTON_HEIGHT.dp)
                     ) {
                         Text(text = "Sign up", fontSize = BUTTON_FONT_SIZE.sp)
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
