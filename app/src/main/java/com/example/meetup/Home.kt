@@ -57,7 +57,7 @@ fun Home (navController: NavController) {
                             label = { Text(item.title) },
                             selected = item == selectedItem.value,
                             onClick = {
-//                                scope.launch { drawerState.close() }
+                                scope.launch { drawerState.close() }
                                 selectedItem.value = item
                             },
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
