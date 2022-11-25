@@ -32,6 +32,9 @@ fun Navigation() {
         composable(route = Screen.ActivityRegister.route) {
             ActivityRegister(navController = navController)
         }
+        composable(route = Screen.Home.route) {
+            Home(navController = navController)
+        }
 
         // Add new composable with route which is path to a screen and optionally arguments as above
     }
