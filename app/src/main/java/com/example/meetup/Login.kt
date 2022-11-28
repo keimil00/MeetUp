@@ -39,111 +39,111 @@ fun Login (navController: NavController)
         color = MaterialTheme.colorScheme.background
     ) {
 
-        Box(modifier = Modifier.fillMaxSize())
-        {
-            Image(
-                painter = painterResource(id = R.drawable.background_image),
-                contentDescription = "Background image for meetup",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds
-            )
-            Card(
-                modifier = Modifier
-                    .padding(top = 130.dp)
-                    .padding(horizontal = 40.dp)
-                    .fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                ),
-                shape = MaterialTheme.shapes.extraLarge
+    }
+    Box(modifier = Modifier.fillMaxSize())
+    {
+        Image(
+            painter = painterResource(id = R.drawable.background_image),
+            contentDescription = "Background image for meetup",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Card(
+            modifier = Modifier
+                .padding(top = 130.dp)
+                .padding(horizontal = 40.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Column(
+                modifier = Modifier.padding(10.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(10.dp)
+                TextField(
+                    value = username,
+                    onValueChange = { newText -> username = newText },
+                    label = { Text(text = "Username", fontSize = TEXT_FONT_SIZE.sp) },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "Enter your username",
+                            fontSize = TEXT_FONT_SIZE.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 10.dp),
+                    textStyle = TextStyle(fontSize = TEXT_FONT_SIZE.sp),
+                )
+            }
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                TextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text(text = "Password", fontSize = TEXT_FONT_SIZE.sp) },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "Enter your password",
+                            fontSize = TEXT_FONT_SIZE.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 10.dp),
+                    textStyle = TextStyle(fontSize = TEXT_FONT_SIZE.sp),
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                )
+            }
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Button(
+                    onClick = {
+                        navController.navigate(
+                            Screen.Home.route
+                        )
+                    },
+                    modifier = Modifier
+                        .padding(
+                            horizontal = BUTTON_HORIZONTAL_PADDING.dp,
+                            vertical = 10.dp
+                        )
+                        .fillMaxWidth()
+                        .height(BUTTON_HEIGHT.dp)
                 ) {
-                    TextField(
-                        value = username,
-                        onValueChange = { newText -> username = newText },
-                        label = { Text(text = "Username", fontSize = TEXT_FONT_SIZE.sp) },
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = "Enter your username",
-                                fontSize = TEXT_FONT_SIZE.sp
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp, vertical = 10.dp),
-                        textStyle = TextStyle(fontSize = TEXT_FONT_SIZE.sp),
-                    )
+                    Text(text = "Sign In", fontSize = BUTTON_FONT_SIZE.sp)
                 }
                 Column(
-                    modifier = Modifier.padding(10.dp)
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        label = { Text(text = "Password", fontSize = TEXT_FONT_SIZE.sp) },
-                        singleLine = true,
-                        placeholder = {
-                            Text(
-                                text = "Enter your password",
-                                fontSize = TEXT_FONT_SIZE.sp
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 10.dp, vertical = 10.dp),
-                        textStyle = TextStyle(fontSize = TEXT_FONT_SIZE.sp),
-                        visualTransformation = PasswordVisualTransformation(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    )
+                    Text(text = "or", fontSize = TEXT_FONT_SIZE.sp)
                 }
-                Column(
-                    modifier = Modifier.padding(10.dp)
+                Button(
+                    onClick = {
+                        navController.navigate(Screen.ActivityRegister.route)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    modifier = Modifier
+                        .padding(
+                            horizontal = BUTTON_HORIZONTAL_PADDING.dp,
+                            vertical = 10.dp
+                        )
+                        .fillMaxWidth()
+                        .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Button(
-                        onClick = {
-                            navController.navigate(
-                                Screen.Home.route
-                            )
-                        },
-                        modifier = Modifier
-                            .padding(
-                                horizontal = BUTTON_HORIZONTAL_PADDING.dp,
-                                vertical = 10.dp
-                            )
-                            .fillMaxWidth()
-                            .height(BUTTON_HEIGHT.dp)
-                    ) {
-                        Text(text = "Sign In", fontSize = BUTTON_FONT_SIZE.sp)
-                    }
-                    Column(
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(text = "or", fontSize = TEXT_FONT_SIZE.sp)
-                    }
-                    Button(
-                        onClick = {
-                            navController.navigate(Screen.ActivityRegister.route)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        ),
-                        modifier = Modifier
-                            .padding(
-                                horizontal = BUTTON_HORIZONTAL_PADDING.dp,
-                                vertical = 10.dp
-                            )
-                            .fillMaxWidth()
-                            .height(BUTTON_HEIGHT.dp)
-                    ) {
-                        Text(text = "Sign up", fontSize = BUTTON_FONT_SIZE.sp)
-                    }
+                    Text(text = "Sign up", fontSize = BUTTON_FONT_SIZE.sp)
                 }
             }
         }

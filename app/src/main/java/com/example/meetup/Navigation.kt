@@ -35,6 +35,12 @@ fun Navigation() {
         composable(route = Screen.Home.route) {
             Home(navController = navController)
         }
+        composable(route = Screen.Profile.route){
+            Profile(navController = navController)
+        }
+        composable(route = Screen.Friends.route){
+            Friends(navController = navController)
+        }
 
         // Add new composable with route which is path to a screen and optionally arguments as above
     }

@@ -5,6 +5,8 @@ sealed class Screen(val route: String) {
     object Login : Screen("login")
     object ActivityRegister: Screen("activity_register")
     object Home: Screen("home")
+    object Profile: Screen("profile")
+    object Friends: Screen("friends")
 
     // Add new object with new Activity as shown above
 

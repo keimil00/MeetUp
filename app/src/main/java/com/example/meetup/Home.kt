@@ -59,6 +59,12 @@ fun Home (navController: NavController) {
                             onClick = {
                                 scope.launch { drawerState.close() }
                                 selectedItem.value = item
+                                if (item.title.equals("Mój profil"))
+                                    navController.navigate(Screen.Profile.route)
+                                else if (item.title.equals("Znajomi"))
+                                    navController.navigate(Screen.Friends.route)
+                                else
+                                    navController.navigate(Screen.Login.route)
                             },
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
