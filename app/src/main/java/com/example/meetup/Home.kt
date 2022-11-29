@@ -33,12 +33,12 @@ fun Home (navController: NavController) {
     val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
     val items = listOf(
-        MenuItem(title = "Ekran główny", Icons.Filled.Home),
-        MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts),
-        MenuItem(title = "Czaty", Icons.Filled.Chat),
-        MenuItem(title = "Znajomi", Icons.Filled.Person),
-        MenuItem(title = "O aplikacji", Icons.Filled.Info),
-        MenuItem(title = "Wyloguj", Icons.Filled.Logout)
+        MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Login.route),
+        MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
+        MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
+        MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
+        MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.Home.route),
+        MenuItem(title = "Wyloguj", Icons.Filled.Logout, Screen.Login.route)
         )
 
     val selectedItem = remember { mutableStateOf(items[0]) }
@@ -59,12 +59,7 @@ fun Home (navController: NavController) {
                             onClick = {
                                 scope.launch { drawerState.close() }
                                 selectedItem.value = item
-                                if (item.title.equals("Mój profil"))
-                                    navController.navigate(Screen.Profile.route)
-                                else if (item.title.equals("Znajomi"))
-                                    navController.navigate(Screen.Friends.route)
-                                else
-                                    navController.navigate(Screen.Login.route)
+                                navController.navigate(selectedItem.value.navRoute)
                             },
                             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
                         )
