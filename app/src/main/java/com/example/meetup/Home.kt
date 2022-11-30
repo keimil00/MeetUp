@@ -89,7 +89,8 @@ fun Home (navController: NavController) {
                         )
                     }
                 ) {
-                    Text(text = "Home")
+                    MapView(Modifier.padding(it))
+
                 }
 
                 var skipHalfExpanded by remember { mutableStateOf(false) }
@@ -126,6 +127,7 @@ fun Home (navController: NavController) {
                         }
                     }
                 ) {
+
                 }
             }
         )
