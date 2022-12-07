@@ -7,11 +7,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import org.osmdroid.api.IMapController
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.CopyrightOverlay
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+
 
 @Composable
 fun rememberMapViewWithLifecycle(): MapView {
@@ -33,7 +36,7 @@ fun rememberMapViewWithLifecycle(): MapView {
     // make font size readable
     mapView.isTilesScaledToDpi = true
 
-    // rotation gestures
+    // rotation gestures and zooming
     val rotationGestureOverlay = RotationGestureOverlay(mapView)
     rotationGestureOverlay.isEnabled
     mapView.setMultiTouchControls(true)
@@ -47,6 +50,13 @@ fun rememberMapViewWithLifecycle(): MapView {
     val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
     locationOverlay.enableMyLocation()
     mapView.overlays.add(locationOverlay)
+
+    // if no location, default starting place in Wroclaw
+    val mapController: IMapController = mapView.controller
+    mapController.setZoom(10.5)
+    val startPoint = GeoPoint(51.110150, 17.031780)
+    mapController.setCenter(startPoint)
+
 
     return mapView
 }
