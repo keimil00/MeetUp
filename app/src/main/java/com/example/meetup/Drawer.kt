@@ -1,41 +1,92 @@
 package com.example.meetup
 
- import android.widget.Space
- import androidx.compose.foundation.clickable
+ import android.annotation.SuppressLint
  import androidx.compose.foundation.layout.*
- import androidx.compose.foundation.lazy.LazyColumn
- import androidx.compose.foundation.lazy.items
+ import androidx.compose.material.*
+ import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.*
+ import androidx.compose.material3.*
+ import androidx.compose.material3.DrawerValue
  import androidx.compose.material3.Icon
  import androidx.compose.material3.Text
- import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
  import androidx.compose.ui.unit.dp
- import androidx.compose.ui.unit.sp
+ import androidx.navigation.NavController
+ import kotlinx.coroutines.launch
 
-//@Composable
-//fun Drawer(
-//    items: List<MenuItem>,
-//    modifier: Modifier,
-//    itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
-//    onItemClick: (MenuItem) -> Unit
-//) {
-//    LazyColumn(modifier) {
-//        items(items) {
-//            item ->
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .clickable { onItemClick(item) }
-//                    .padding(16.dp)) {
-//                Icon(imageVector = item.icon, contentDescription = item.contentDescription)
-//                Spacer(modifier = Modifier.width(16.dp))
-//                Text(
-//                    text = item.title,
-//                    style = itemTextStyle,
-//                    modifier = Modifier.weight(1f)
-//                )
-//            }
-//        }
-//    }
-//}
+/**
+ * @param navController The [NavController] to use for navigation.
+ * @param content The content to display in the [Drawer].
+ */
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Drawer(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
+ val drawerState = rememberDrawerState(DrawerValue.Closed)
+ val scope = rememberCoroutineScope()
+// icons to mimic drawer destinations
+ val items = listOf(
+  MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Login.route),
+  MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
+  MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
+  MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
+  MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.Home.route),
+  MenuItem(title = "Wyloguj", Icons.Filled.Logout, Screen.Login.route)
+ )
+
+ val selectedItem = remember { mutableStateOf(items[0]) }
+ androidx.compose.material3.Surface(
+  modifier = Modifier.fillMaxSize(),
+  color = androidx.compose.material3.MaterialTheme.colorScheme.background
+ ) {
+  ModalNavigationDrawer(
+   drawerState = drawerState,
+   drawerContent = {
+    ModalDrawerSheet {
+     Spacer(Modifier.height(12.dp))
+     items.forEach { item ->
+      NavigationDrawerItem(
+       icon = { Icon(item.icon, contentDescription = null) },
+       label = { Text(item.title) },
+       selected = item == selectedItem.value,
+       onClick = {
+        scope.launch { drawerState.close() }
+        selectedItem.value = item
+        navController.navigate(selectedItem.value.navRoute)
+       },
+       modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+      )
+      Spacer(Modifier.height(12.dp))
+     }
+    }
+   },
+   content = {
+    Scaffold(
+     topBar = {
+      CenterAlignedTopAppBar(
+       title = {
+        Text(text = "Mapa")
+       },
+       colors = TopAppBarDefaults.smallTopAppBarColors(
+        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
+        titleContentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+       ),
+       navigationIcon = {
+        androidx.compose.material3.IconButton(onClick = { scope.launch { drawerState.open() } }) {
+         Icon(
+          imageVector = Icons.Default.Menu,
+          contentDescription = "Menu"
+         )
+        }
+       }
+      )
+     }
+    ) {
+     content(it)
+    }
+   }
+  )
+ }
+}
