@@ -1,8 +1,9 @@
-package com.example.meetup
+package com.example.meetup.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.meetup.BuildConfig
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
 

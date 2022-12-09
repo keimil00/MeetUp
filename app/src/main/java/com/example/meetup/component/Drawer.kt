@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.component
 
  import android.annotation.SuppressLint
  import androidx.compose.foundation.layout.*
@@ -13,6 +13,8 @@ package com.example.meetup
  import androidx.compose.ui.Modifier
  import androidx.compose.ui.unit.dp
  import androidx.navigation.NavController
+ import com.example.meetup.model.MenuItem
+ import com.example.meetup.navigation.Screen
  import kotlinx.coroutines.launch
 
 /**

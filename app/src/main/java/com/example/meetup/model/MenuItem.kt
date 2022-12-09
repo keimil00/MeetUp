@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.model
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

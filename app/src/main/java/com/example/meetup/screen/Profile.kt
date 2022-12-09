@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.screen
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -19,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -30,8 +29,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.example.meetup.component.Drawer
+import com.example.meetup.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">MeetUp</string>
+    <string name="background_image_description">Background image for meetup</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="or">or</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_username_msg">Enter your username</string>
+    <string name="enter_password_msg">Enter your password</string>
+
 </resources>

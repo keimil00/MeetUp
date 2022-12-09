@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.model
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Icon

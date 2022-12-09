@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -14,6 +14,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.meetup.component.Drawer
+import com.example.meetup.component.MapView
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class)

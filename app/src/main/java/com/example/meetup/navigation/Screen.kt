@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.navigation
 
 sealed class Screen(val route: String) {
     object MainScreen: Screen("main_screen")

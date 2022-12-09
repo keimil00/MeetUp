@@ -1,9 +1,6 @@
-package com.example.meetup
+package com.example.meetup.screen
 
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -13,9 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.meetup.authorization.RegistrationRequest
-import com.example.meetup.authorization.register
-import com.example.meetup.ui.theme.MeetUpTheme
+import com.example.meetup.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

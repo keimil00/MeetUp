@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
