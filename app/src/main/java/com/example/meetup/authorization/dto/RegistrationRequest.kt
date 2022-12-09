@@ -1,4 +1,4 @@
-package com.example.meetup.authorization
+package com.example.meetup.authorization.dto
 
 data class RegistrationRequest(
     val firstName: String,

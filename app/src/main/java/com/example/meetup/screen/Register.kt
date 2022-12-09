@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.meetup.authorization.dto.RegistrationRequest
+import com.example.meetup.authorization.register
 import com.example.meetup.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -106,7 +108,8 @@ fun ActivityRegister(navController: NavController){
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(
                                 onClick = {
-                                    // TODO Here call auth function for example register(RegistrationRequest(name.text, surname.text, emailAddress.text, password.text)
+                                    register(
+                                        RegistrationRequest(name.text, surname.text, emailAddress.text, password.text))
                                     navController.navigate(Screen.Home.route) },
                                 contentPadding = ButtonDefaults.TextButtonContentPadding,
                             ) {

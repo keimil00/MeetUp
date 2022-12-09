@@ -7,6 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
+object backgroundImageColourPalette{
+    val pink = Color(0xFFFF00FE)
+    val black = Color(0xFF000000)
+    val darkBlue = Color(0xFF286EAB )
+    val yellow = Color(0xFFCFA620 )
+    val green = Color(0xFF195301 )
+    val turquoise = Color(0xFF00FDFD )
+    val orange = Color(0xFFD55018 )
+}
+
 
 private val DarkColorPalette = darkColorScheme(
     primary = Green80,

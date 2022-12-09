@@ -30,7 +30,7 @@ fun Drawer(navController: NavController, title: String, content: @Composable (Pa
  val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
  val items = listOf(
-  MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Login.route),
+  MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Home.route),
   MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
   MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
   MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
