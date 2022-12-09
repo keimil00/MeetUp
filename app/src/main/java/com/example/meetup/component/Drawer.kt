@@ -25,7 +25,7 @@ package com.example.meetup.component
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Drawer(navController: NavController, content: @Composable (PaddingValues) -> Unit) {
+fun Drawer(navController: NavController, title: String, content: @Composable (PaddingValues) -> Unit) {
  val drawerState = rememberDrawerState(DrawerValue.Closed)
  val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
@@ -69,7 +69,7 @@ fun Drawer(navController: NavController, content: @Composable (PaddingValues) ->
      topBar = {
       CenterAlignedTopAppBar(
        title = {
-        Text(text = "Mapa")
+        Text(text = title)
        },
        colors = TopAppBarDefaults.smallTopAppBarColors(
         containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,

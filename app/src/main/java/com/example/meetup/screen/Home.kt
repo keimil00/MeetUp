@@ -12,8 +12,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.component.MapView
 
@@ -21,7 +23,7 @@ import com.example.meetup.component.MapView
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Home (navController: NavController) {
-    Drawer(navController = navController, content = { paddingValues ->
+    Drawer(navController = navController, title = stringResource(id = R.string.map), content = { paddingValues ->
         MapView(Modifier.padding(paddingValues))
         var skipHalfExpanded by remember { mutableStateOf(false) }
         val state = rememberModalBottomSheetState(

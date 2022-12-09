@@ -9,4 +9,9 @@
     <string name="enter_username_msg">Enter your username</string>
     <string name="enter_password_msg">Enter your password</string>
 
+    <string name="map">Map</string>
+    <string name="profile">Profile</string>
+    <string name="friends">Friends</string>
+
+
 </resources>

@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -36,7 +37,7 @@ import com.example.meetup.R
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Profile (navController: NavController){//, user : User) {
-    Drawer(navController = navController, content = {
+    Drawer(navController = navController, title = stringResource(id = R.string.profile), content = {
         var username by rememberSaveable{ mutableStateOf("") }
         var name by rememberSaveable {mutableStateOf("")}
         //var password by remember { mutableStateOf("") }
