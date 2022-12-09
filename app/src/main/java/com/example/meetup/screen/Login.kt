@@ -45,7 +45,7 @@ fun Login (navController: NavController)
     {
         Image(
             painter = painterResource(id = R.drawable.background_image),
-            contentDescription = "Background image for meetup",
+            contentDescription = stringResource(id = R.string.background_image_description),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.FillBounds
         )
@@ -65,11 +65,11 @@ fun Login (navController: NavController)
                 TextField(
                     value = username,
                     onValueChange = { newText -> username = newText },
-                    label = { Text(text = "Username", fontSize = TEXT_FONT_SIZE.sp) },
+                    label = { Text(text = stringResource(id = R.string.username), fontSize = TEXT_FONT_SIZE.sp) },
                     singleLine = true,
                     placeholder = {
                         Text(
-                            text = "Enter your username",
+                            text = stringResource(id = R.string.enter_username_msg),
                             fontSize = TEXT_FONT_SIZE.sp
                         )
                     },
@@ -85,11 +85,11 @@ fun Login (navController: NavController)
                 TextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text(text = "Password", fontSize = TEXT_FONT_SIZE.sp) },
+                    label = { Text(text = stringResource(id = R.string.password), fontSize = TEXT_FONT_SIZE.sp) },
                     singleLine = true,
                     placeholder = {
                         Text(
-                            text = "Enter your password",
+                            text = stringResource(id = R.string.enter_password_msg),
                             fontSize = TEXT_FONT_SIZE.sp
                         )
                     },
@@ -118,7 +118,7 @@ fun Login (navController: NavController)
                         .fillMaxWidth()
                         .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Text(text = "Sign In", fontSize = BUTTON_FONT_SIZE.sp)
+                    Text(text = stringResource(id = R.string.sign_in), fontSize = BUTTON_FONT_SIZE.sp)
                 }
                 Column(
                     modifier = Modifier
@@ -126,7 +126,7 @@ fun Login (navController: NavController)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "or", fontSize = TEXT_FONT_SIZE.sp)
+                    Text(text = stringResource(id = R.string.or), fontSize = TEXT_FONT_SIZE.sp)
                 }
                 Button(
                     onClick = {
@@ -144,7 +144,7 @@ fun Login (navController: NavController)
                         .fillMaxWidth()
                         .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Text(text = "Sign up", fontSize = BUTTON_FONT_SIZE.sp)
+                    Text(text = stringResource(id = R.string.sign_up), fontSize = BUTTON_FONT_SIZE.sp)
                 }
             }
         }
