@@ -12,6 +12,7 @@
     <string name="map">Map</string>
     <string name="profile">Profile</string>
     <string name="friends">Friends</string>
+    <string name="events">Events now</string>
 
 
 </resources>
