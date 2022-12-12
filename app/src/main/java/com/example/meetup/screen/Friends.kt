@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
@@ -79,7 +80,7 @@ fun Friends (navController: NavController) {
 @Composable
 fun FriendListItem(navController: NavController, name: String, username: String, image: Image? = null){ //optionally: user : User
     val imageUri = rememberSaveable{mutableStateOf("") }
-    val painter = rememberImagePainter(
+    val painter = rememberAsyncImagePainter(
         if(imageUri.value.isEmpty())
             R.drawable.ic_user
         else

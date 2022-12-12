@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.component.MapView
+import com.example.meetup.navigation.Screen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
@@ -56,6 +57,9 @@ fun Home (navController: NavController) {
                     modifier = Modifier.absoluteOffset(x = 0.dp, y = (-100).dp),
                     onClick = {
                         // TODO: Add event
+                        navController.navigate(
+                            Screen.NewMeeting.route
+                        )
                     },
                     shape = MaterialTheme.shapes.medium,
                     containerColor = MaterialTheme.colorScheme.primary,

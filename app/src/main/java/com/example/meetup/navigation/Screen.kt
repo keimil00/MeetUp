@@ -7,6 +7,7 @@ sealed class Screen(val route: String) {
     object Home: Screen("home")
     object Profile: Screen("profile")
     object Friends: Screen("friends")
+    object NewMeeting: Screen("new_meeting")
 
     // Add new object with new Activity as shown above
 

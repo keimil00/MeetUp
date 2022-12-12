@@ -13,6 +13,7 @@
     <string name="profile">Profile</string>
     <string name="friends">Friends</string>
     <string name="events">Events now</string>
+    <string name="new_meeting">New meeting</string>
 
 
 </resources>
