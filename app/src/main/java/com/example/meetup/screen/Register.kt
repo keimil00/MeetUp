@@ -1,123 +1,209 @@
 package com.example.meetup.screen
 
 
+import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
-import androidx.compose.material3.Button
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.meetup.authorization.dto.RegistrationRequest
-import com.example.meetup.authorization.register
+import com.example.meetup.authorization.AuthUiEvent
+import com.example.meetup.MainViewModel
+import com.example.meetup.R
+import com.example.meetup.authorization.AuthResult
 import com.example.meetup.navigation.Screen
+
+const val REGISTRATION_TEXT_FONT_SIZE = 15
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ActivityRegister(navController: NavController){
-    var username by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) };
-    var phoneNumber by remember { mutableStateOf(TextFieldValue("")) };
-    var emailAddress by remember { mutableStateOf(TextFieldValue("")) };
-    var name by remember { mutableStateOf(TextFieldValue("")) };
-    var surname by remember { mutableStateOf(TextFieldValue("")) };
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(text = "Material 3")
-                    },
-                    colors = TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                )
-            }
-        ) { values ->
-            LazyColumn(contentPadding = values) {
-                items(1) {
-                    Card(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+fun Register(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
+    val context = LocalContext.current
 
-                            ),
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(16.dp)
-                        ) {
-                            TextField(
-                                value = name,
-                                onValueChange = { name = it },
-                                label = { Text("Name") },
-                                singleLine = true,
-                                placeholder = { Text("Enter your name") },
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            TextField(
-                                value = surname,
-                                onValueChange = { surname = it },
-                                label = { Text("Surname") },
-                                singleLine = true,
-                                placeholder = { Text("Enter your surname") },
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            TextField(
-                                value = username,
-                                onValueChange = { username = it },
-                                label = { Text("Username") },
-                                singleLine = true,
-                                placeholder = { Text("Enter your username") },
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-
-
-                            TextField(
-                                value = password,
-                                onValueChange = { password = it },
-                                label = { Text("Password") },
-                                singleLine = true,
-                                placeholder = { Text("Enter your password") },
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            TextField(
-                                value = phoneNumber,
-                                onValueChange = { phoneNumber = it },
-                                label = { Text("Phone number") },
-                                singleLine = true,
-                                placeholder = { Text("Enter your phone number") },
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            TextField(
-                                value = emailAddress,
-                                onValueChange = { emailAddress = it },
-                                label = { Text("Email address") },
-                                singleLine = true,
-                                placeholder = { Text("Enter your address") },
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Button(
-                                onClick = {
-                                    register(
-                                        RegistrationRequest(name.text, surname.text, emailAddress.text, password.text))
-                                    navController.navigate(Screen.Home.route) },
-                                contentPadding = ButtonDefaults.TextButtonContentPadding,
-                            ) {
-                                Text(text = "Register")
-                            }
-                            Spacer(modifier = Modifier.height(8.dp))
+    LaunchedEffect(viewModel, context) {
+        viewModel.authResults.collect { result ->
+            when(result) {
+                is AuthResult.Authorized -> {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Register.route) {
+                            inclusive = true
                         }
                     }
+                }
+                is AuthResult.Unauthorized -> {
+
+                }
+                is AuthResult.UnknownError -> {
+                    Toast.makeText(
+                        context,
+                        "An unknown error occurred",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+
+    Box(modifier = Modifier.fillMaxSize())
+    {
+        Image(
+            painter = painterResource(id = R.drawable.background_image),
+            contentDescription = stringResource(id = R.string.background_image_description),
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Card(
+            modifier = Modifier
+                .padding(top = 90.dp)
+                .padding(horizontal = 40.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                TextField(
+                    value = viewModel.state.firstName,
+                    onValueChange = { viewModel.onEvent(AuthUiEvent.FirstNameChanged(it)) },
+                    label = { Text(text = "Name", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "Enter your name",
+                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                )
+            }
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                TextField(
+                    value = viewModel.state.lastName,
+                    onValueChange = { viewModel.onEvent(AuthUiEvent.LastNameChanged(it)) },
+                    label = { Text(text = "Surname", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "Enter your name",
+                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                )
+            }
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                TextField(
+                    value = viewModel.state.email,
+                    onValueChange = { viewModel.onEvent(AuthUiEvent.EmailChanged(it)) },
+                    label = { Text(text = "Email", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "Enter your Email",
+                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                )
+            }
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                TextField(
+                    value = viewModel.state.password,
+                    onValueChange = { viewModel.onEvent(AuthUiEvent.PasswordChanged(it)) },
+                    label = { Text(text = "Password", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    singleLine = true,
+                    placeholder = {
+                        Text(
+                            text = "Enter your Password",
+                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp),
+                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                )
+            }
+            Column(
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Button(
+                    onClick = {
+                        viewModel.onEvent(AuthUiEvent.SignUp)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    modifier = Modifier
+                        .padding(
+                            horizontal = BUTTON_HORIZONTAL_PADDING.dp,
+                            vertical = 10.dp
+                        )
+                        .fillMaxWidth()
+                        .height(BUTTON_HEIGHT.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.sign_up), fontSize = BUTTON_FONT_SIZE.sp)
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = stringResource(id = R.string.or), fontSize =REGISTRATION_TEXT_FONT_SIZE.sp)
+                }
+                Button(
+                    onClick = {
+                        navController.navigate(Screen.Login.route){
+                            popUpTo(Screen.Register.route){
+                                inclusive = true
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(
+                            horizontal = BUTTON_HORIZONTAL_PADDING.dp,
+                            vertical = 10.dp
+                        )
+                        .fillMaxWidth()
+                        .height(BUTTON_HEIGHT.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.sign_in), fontSize = BUTTON_FONT_SIZE.sp)
                 }
             }
         }

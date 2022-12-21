@@ -29,8 +29,8 @@ fun Navigation() {
         ) {
             entry -> MainScreen(entry.arguments?.getString("login"))
         }
-        composable(route = Screen.ActivityRegister.route) {
-            ActivityRegister(navController = navController)
+        composable(route = Screen.Register.route) {
+            Register(navController = navController)
         }
         composable(route = Screen.Home.route) {
             Home(navController = navController)

@@ -3,7 +3,7 @@ package com.example.meetup.navigation
 sealed class Screen(val route: String) {
     object MainScreen: Screen("main_screen")
     object Login : Screen("login")
-    object ActivityRegister: Screen("activity_register")
+    object Register: Screen("activity_register")
     object Home: Screen("home")
     object Profile: Screen("profile")
     object Friends: Screen("friends")

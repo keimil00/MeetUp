@@ -11,10 +11,12 @@ package com.example.meetup.component
  import androidx.compose.material3.Text
  import androidx.compose.runtime.*
  import androidx.compose.ui.Modifier
+ import androidx.compose.ui.platform.LocalContext
  import androidx.compose.ui.unit.dp
  import androidx.navigation.NavController
  import com.example.meetup.model.MenuItem
  import com.example.meetup.navigation.Screen
+ import io.ktor.http.*
  import kotlinx.coroutines.launch
 
 /**
@@ -22,11 +24,13 @@ package com.example.meetup.component
  * @param content The content to display in the [Drawer].
  */
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Drawer(navController: NavController, title: String, content: @Composable (PaddingValues) -> Unit) {
  val drawerState = rememberDrawerState(DrawerValue.Closed)
+ val context = LocalContext.current
  val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
  val items = listOf(
@@ -56,6 +60,12 @@ fun Drawer(navController: NavController, title: String, content: @Composable (Pa
        onClick = {
         scope.launch { drawerState.close() }
         selectedItem.value = item
+        if (selectedItem.value.navRoute == Screen.Login.route){
+          context.getSharedPreferences("prefs", 0)
+           .edit()
+           .remove("jwt")
+           .apply()
+        }
         navController.navigate(selectedItem.value.navRoute)
        },
        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
