@@ -69,8 +69,6 @@ fun Login (navController: NavController, viewModel: MainViewModel = hiltViewMode
     }
 
 
-    var username by remember { mutableStateOf(TextFieldValue("")) }
-    var password by remember { mutableStateOf(TextFieldValue("")) }
 
     Box(modifier = Modifier.fillMaxSize())
     {

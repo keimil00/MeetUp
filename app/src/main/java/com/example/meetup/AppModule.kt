@@ -3,14 +3,12 @@ package com.example.meetup
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.example.meetup.authorization.AuthApi
-import com.example.meetup.authorization.AuthRepository
-import com.example.meetup.authorization.AuthRepositoryImpl
-import com.example.meetup.authorization.HttpRoutes
+import com.example.meetup.authorization.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
@@ -22,12 +20,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthApi(): AuthApi {
-        return Retrofit.Builder()
-            .baseUrl(HttpRoutes.BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
-            .create()
+    fun provideAuthApi(authInterceptor: AuthInterceptor): AuthApi {
+        return RetrofitClient(authInterceptor).api
     }
 
     @Provides
@@ -40,5 +34,11 @@ object AppModule {
     @Singleton
     fun provideAuthRepository(api: AuthApi, prefs: SharedPreferences): AuthRepository {
         return AuthRepositoryImpl(api, prefs)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(prefs: SharedPreferences): AuthInterceptor {
+        return AuthInterceptor(prefs)
     }
 }

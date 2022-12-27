@@ -24,12 +24,6 @@ class AuthRepositoryImpl(
                 .putString("jwt", token)
                 .apply()
 
-            println("After signup")
-            println("Before token save")
-
-            println("After token save")
-
-            println("Before authenticate")
             // AuthResult.Authorized()
             authenticate()
 //            signIn(username, password)
@@ -43,7 +37,6 @@ class AuthRepositoryImpl(
             }
         } catch (e: Exception) {
             println(e.message)
-            println("Exception")
 
             AuthResult.UnknownError()
         }
@@ -52,7 +45,7 @@ class AuthRepositoryImpl(
     override suspend fun signIn(email: String, password: String): AuthResult<Unit> {
         return try {
             val token = Base64.encodeToString("${email}:${password}".toByteArray(), Base64.NO_WRAP)
-            api.authenticate("Basic $token")
+            api.signIn("Basic $token")
             prefs.edit()
                 .putString("jwt", token)
                 .apply()
@@ -68,12 +61,9 @@ class AuthRepositoryImpl(
         }
     }
 
-    // TODO when authentication will be ready on backend, correct this
     override suspend fun authenticate(): AuthResult<Unit> {
         return try {
-            val token = prefs.getString("jwt", null) ?: return AuthResult.Unauthorized()
-            api.authenticate("Basic $token")
-            println("After authenticate")
+            api.authenticate()
             AuthResult.Authorized()
         } catch(e: HttpException) {
             if(e.code() == 401) {
@@ -85,8 +75,6 @@ class AuthRepositoryImpl(
             }
         } catch (e: Exception) {
             println(e.message)
-            println("Exception")
-
             AuthResult.UnknownError()
         }
     }

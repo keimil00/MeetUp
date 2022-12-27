@@ -73,7 +73,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val result = repository.signIn(
-                username = state.email,
+                email = state.email,
                 password = state.password
             )
             resultChannel.send(result)
