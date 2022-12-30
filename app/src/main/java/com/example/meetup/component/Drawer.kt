@@ -34,71 +34,71 @@ fun Drawer(navController: NavController, title: String, content: @Composable (Pa
  val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
  val items = listOf(
-  MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Home.route),
-  MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
-  MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
-  MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
-  MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.Home.route),
-  MenuItem(title = "Wyloguj", Icons.Filled.Logout, Screen.Login.route)
+    MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Home.route),
+    MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
+    MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
+    MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
+    MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.Home.route),
+    MenuItem(title = "Wyloguj", Icons.Filled.Logout, Screen.Login.route)
  )
 
  val selectedItem = remember { mutableStateOf(items[0]) }
  androidx.compose.material3.Surface(
-  modifier = Modifier.fillMaxSize(),
-  color = androidx.compose.material3.MaterialTheme.colorScheme.background
+    modifier = Modifier.fillMaxSize(),
+    color = androidx.compose.material3.MaterialTheme.colorScheme.background
  ) {
-  ModalNavigationDrawer(
-   drawerState = drawerState,
-   drawerContent = {
-    ModalDrawerSheet {
-     Spacer(Modifier.height(12.dp))
-     items.forEach { item ->
-      NavigationDrawerItem(
-       icon = { Icon(item.icon, contentDescription = null) },
-       label = { Text(item.title) },
-       selected = item == selectedItem.value,
-       onClick = {
-        scope.launch { drawerState.close() }
-        selectedItem.value = item
-        if (selectedItem.value.navRoute == Screen.Login.route){
-          context.getSharedPreferences("prefs", 0)
-           .edit()
-           .remove("jwt")
-           .apply()
+    ModalNavigationDrawer(
+     drawerState = drawerState,
+     drawerContent = {
+        ModalDrawerSheet {
+         Spacer(Modifier.height(12.dp))
+         items.forEach { item ->
+            NavigationDrawerItem(
+             icon = { Icon(item.icon, contentDescription = null) },
+             label = { Text(item.title) },
+             selected = item == selectedItem.value,
+             onClick = {
+                scope.launch { drawerState.close() }
+                selectedItem.value = item
+                if (selectedItem.value.navRoute == Screen.Login.route){
+                    context.getSharedPreferences("prefs", 0)
+                     .edit()
+                     .remove("jwt")
+                     .apply()
+                }
+                navController.navigate(selectedItem.value.navRoute)
+             },
+             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+            )
+            Spacer(Modifier.height(12.dp))
+         }
         }
-        navController.navigate(selectedItem.value.navRoute)
-       },
-       modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-      )
-      Spacer(Modifier.height(12.dp))
-     }
-    }
-   },
-   content = {
-    Scaffold(
-     topBar = {
-      CenterAlignedTopAppBar(
-       title = {
-        Text(text = title)
-       },
-       colors = TopAppBarDefaults.smallTopAppBarColors(
-        containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
-        titleContentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
-       ),
-       navigationIcon = {
-        androidx.compose.material3.IconButton(onClick = { scope.launch { drawerState.open() } }) {
-         Icon(
-          imageVector = Icons.Default.Menu,
-          contentDescription = "Menu"
-         )
+     },
+     content = {
+        Scaffold(
+         topBar = {
+            CenterAlignedTopAppBar(
+             title = {
+                Text(text = title)
+             },
+             colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant,
+                titleContentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
+             ),
+             navigationIcon = {
+                androidx.compose.material3.IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                 Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Menu"
+                 )
+                }
+             }
+            )
+         }
+        ) {
+         content(it)
         }
-       }
-      )
      }
-    ) {
-     content(it)
-    }
-   }
-  )
+    )
  }
 }

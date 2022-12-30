@@ -1,4 +1,4 @@
-package com.example.meetup.authorization
+package com.example.meetup.event
 
 sealed class AuthUiEvent {
     data class FirstNameChanged(val value: String): AuthUiEvent()

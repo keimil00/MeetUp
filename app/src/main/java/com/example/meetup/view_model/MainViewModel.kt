@@ -1,4 +1,4 @@
-package com.example.meetup
+package com.example.meetup.view_model
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meetup.authorization.AuthRepository
 import com.example.meetup.authorization.AuthResult
-import com.example.meetup.authorization.AuthUiEvent
+import com.example.meetup.event.AuthUiEvent
 import com.example.meetup.authorization.UserState
 import com.example.meetup.authorization.dto.RegistrationRequest
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -49,13 +49,6 @@ fun NewMeeting(navController: NavController) {
         title = stringResource(id = R.string.new_meeting),
         content = { paddingValues ->
 
-            var username by remember { mutableStateOf(TextFieldValue("")) }
-            var password by remember { mutableStateOf(TextFieldValue("")) };
-            var phoneNumber by remember { mutableStateOf(TextFieldValue("")) };
-            var emailAddress by remember { mutableStateOf(TextFieldValue("")) };
-            var name by remember { mutableStateOf(TextFieldValue("")) };
-            var surname by remember { mutableStateOf(TextFieldValue("")) };
-
 
             var title by remember { mutableStateOf("") }
             var description by remember { mutableStateOf("") }

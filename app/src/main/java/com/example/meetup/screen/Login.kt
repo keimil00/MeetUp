@@ -16,15 +16,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.meetup.MainViewModel
+import com.example.meetup.view_model.MainViewModel
 import com.example.meetup.R
 import com.example.meetup.authorization.AuthResult
-import com.example.meetup.authorization.AuthUiEvent
+import com.example.meetup.event.AuthUiEvent
 import com.example.meetup.navigation.Screen
 
 const val BUTTON_HEIGHT = 60
