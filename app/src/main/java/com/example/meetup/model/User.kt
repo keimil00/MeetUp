@@ -9,8 +9,8 @@ data class User(
     val name: String,
     val username: String,
     val password: String,
-    val image: Bitmap,
-    val birthday: Date
+    val image: Bitmap?,
+    val birthday: Date?
     //val
     //val contentDescription: String
 )
