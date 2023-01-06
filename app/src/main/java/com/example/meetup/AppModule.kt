@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import com.example.meetup.api.AuthApi
 import com.example.meetup.api.FriendsApi
 import com.example.meetup.authorization.*
+import com.example.meetup.user_api.UserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +27,12 @@ object AppModule {
     @Singleton
     fun provideFriendsApi(authInterceptor: AuthInterceptor): FriendsApi {
         return RetrofitClient(authInterceptor).friendsApi
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserApi(authInterceptor: AuthInterceptor): UserApi {
+        return RetrofitClient(authInterceptor).userApi
     }
 
     @Provides

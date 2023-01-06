@@ -135,7 +135,7 @@ fun NewMeeting(navController: NavController) {
                                     Button(onClick = {
                                         colorDialogState.show()
                                     })  {
-                                        Text(text = "Wybierz datę")
+                                        Text(text = "Wybierz kolor")
                                     }
                                 }
                             }

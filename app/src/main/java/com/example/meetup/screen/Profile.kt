@@ -29,17 +29,24 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.meetup.component.Drawer
 import com.example.meetup.R
+import com.example.meetup.view_model.FriendsViewModel
+import com.example.meetup.view_model.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile (navController: NavController){//, user : User) {
-    Drawer(navController = navController, title = stringResource(id = R.string.profile), content = {
-        var username by rememberSaveable{ mutableStateOf("") }
-        var name by rememberSaveable {mutableStateOf("")}
+fun Profile (navController: NavController, userViewModel: UserViewModel = hiltViewModel()){//, user : User) {
+    LaunchedEffect(Unit, block = {
+        userViewModel.getCurrentUser()
+    })
+    Drawer(navController = navController, title = stringResource(id = R.string.profile)) {
+        var username =
+            userViewModel.currentUser.username // var user by rememberSaveable{ mutableStateOf("") }
+        var name = userViewModel.currentUser.name //  by rememberSaveable {mutableStateOf("")}
         //var password by remember { mutableStateOf("") }
         //username = user.username
         //name = user.name
@@ -59,26 +66,32 @@ fun Profile (navController: NavController){//, user : User) {
                 ),
                 shape = MaterialTheme.shapes.extraLarge
             ) {
-                val notification = rememberSaveable{ mutableStateOf("") }
-                if (notification.value.isNotEmpty()){
-                    Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
+                val notification = rememberSaveable { mutableStateOf("") }
+                if (notification.value.isNotEmpty()) {
+                    Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG)
+                        .show()
                     notification.value = ""
                 }
 
-                Column(modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(8.dp)
-                ){
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(8.dp)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
-                    ){
+                    ) {
                         Text(text = "Anuluj",
-                            modifier = Modifier.clickable { notification.value = "Anulowano zmiany" })
+                            modifier = Modifier.clickable {
+                                notification.value = "Anulowano zmiany"
+                            })
                         Text(text = "Zapisz",
-                            modifier = Modifier.clickable { notification.value = "Zapisano zmiany" })
+                            modifier = Modifier.clickable {
+                                notification.value = "Zapisano zmiany"
+                            })
                     }
 
                     ProfileImage()
@@ -88,7 +101,7 @@ fun Profile (navController: NavController){//, user : User) {
                             .fillMaxWidth()
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         Text(text = "Imię", modifier = Modifier.width(100.dp))
                         TextField(
                             value = name,
@@ -105,8 +118,9 @@ fun Profile (navController: NavController){//, user : User) {
                             .fillMaxWidth()
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         Text(text = "Nazwa użytkownika", modifier = Modifier.width(100.dp))
+                        Text(text = username, modifier = Modifier.width(100.dp))
                         TextField(
                             value = username,
                             onValueChange = { username = it },
@@ -133,7 +147,7 @@ fun Profile (navController: NavController){//, user : User) {
                 }
             }
         }
-    })
+    }
 }
 
 
