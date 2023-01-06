@@ -12,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.Button
@@ -23,18 +22,19 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.meetup.component.Drawer
 import com.example.meetup.R
-import com.example.meetup.view_model.FriendsViewModel
+import com.example.meetup.navigation.Screen
 import com.example.meetup.view_model.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -44,13 +44,13 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
         userViewModel.getCurrentUser()
     })
     Drawer(navController = navController, title = stringResource(id = R.string.profile)) {
-        var username =
-            userViewModel.currentUser.username // var user by rememberSaveable{ mutableStateOf("") }
-        var name = userViewModel.currentUser.name //  by rememberSaveable {mutableStateOf("")}
-        //var password by remember { mutableStateOf("") }
-        //username = user.username
-        //name = user.name
-        //password = user.password
+        var username = userViewModel.currentUser.username // var user by rememberSaveable{ mutableStateOf("") }
+        var firstName = userViewModel.currentUser.firstName // by rememberSaveable {mutableStateOf("")}
+        var lastName = userViewModel.currentUser.lastName
+
+
+
+
         Text(text = "Profil")
         Box(modifier = Modifier.fillMaxSize())
         {
@@ -78,7 +78,7 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
                         .verticalScroll(rememberScrollState())
                         .padding(8.dp)
                 ) {
-                    Row(
+                   /* Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
@@ -92,7 +92,7 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
                             modifier = Modifier.clickable {
                                 notification.value = "Zapisano zmiany"
                             })
-                    }
+                    }*/
 
                     ProfileImage()
 
@@ -102,37 +102,21 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Imię", modifier = Modifier.width(100.dp))
-                        TextField(
-                            value = name,
-                            onValueChange = { name = it },
-                            colors = TextFieldDefaults.textFieldColors(
-                                backgroundColor = Color.Transparent,
-                                textColor = Color.Black
-                            )
-                        )
+                        Text(text = firstName + " " + lastName, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
                     }
-
+                    Spacer(modifier = Modifier.size(10.dp))
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Nazwa użytkownika", modifier = Modifier.width(100.dp))
-                        Text(text = username, modifier = Modifier.width(100.dp))
-                        TextField(
-                            value = username,
-                            onValueChange = { username = it },
-                            colors = TextFieldDefaults.textFieldColors(
-                                backgroundColor = Color.Transparent,
-                                textColor = Color.Black
-                            )
-                        )
+                        Text(text = username, textAlign = TextAlign.Center,  modifier = Modifier.fillMaxWidth())
                     }
+                    Spacer(modifier = Modifier.size(10.dp))
                     Button(
                         onClick = {
-                            notification.value = "Usunięto konto"
+                            navController.navigate(Screen.Friends.route)
                         },
                         modifier = Modifier
                             .padding(
@@ -142,7 +126,7 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
                             .fillMaxWidth()
                             .height(BUTTON_HEIGHT.dp)
                     ) {
-                        Text(text = "Usuń konto", fontSize = BUTTON_FONT_SIZE.sp)
+                        Text(text = "Znajomi", fontSize = BUTTON_FONT_SIZE.sp)
                     }
                 }
             }
@@ -155,7 +139,7 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
 @Composable
 fun ProfileImage(){
     val imageUri = rememberSaveable{mutableStateOf("") }
-    val painter = rememberImagePainter(
+    val painter = rememberAsyncImagePainter(
         if(imageUri.value.isEmpty())
             R.drawable.ic_user
         else
@@ -167,8 +151,6 @@ fun ProfileImage(){
         uri?.let { imageUri.value = it.toString() }
     }
 
-
-
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -179,7 +161,7 @@ fun ProfileImage(){
             shape = CircleShape,
             modifier = Modifier
                 .padding(8.dp)
-                .size(100.dp)
+                .size(200.dp)
         ){
             Image(
                 painter = painter,
@@ -187,10 +169,10 @@ fun ProfileImage(){
                 modifier = Modifier
                     .wrapContentSize(align = Alignment.Center)
                     .clickable { launcher.launch("image/*") },
-                contentScale = ContentScale.Crop
+                //contentScale = ContentScale.Crop
             )
 
         }
-        Text(text = "Zmień zdjęcie profilowe")
+       // Text(text = "Zmień zdjęcie profilowe")
     }
 }

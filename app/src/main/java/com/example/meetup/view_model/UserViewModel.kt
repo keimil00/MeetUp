@@ -17,7 +17,7 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val api: UserApi
 ): ViewModel() {
-    private var _currentLoggedUser = User("","","",null,null)
+    private var _currentLoggedUser = User(0,"","","","","",true,true,true,true,true,"")
 
     val currentUser: User
         get() = _currentLoggedUser

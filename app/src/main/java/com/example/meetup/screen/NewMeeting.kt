@@ -56,6 +56,46 @@ fun NewMeeting(navController: NavController) {
             var color by remember { mutableStateOf(Color.Blue) }
             var time by remember { mutableStateOf(LocalTime.now()) }
 
+
+            val dateDialogState = rememberMaterialDialogState()
+            val timeDialogState = rememberMaterialDialogState()
+
+            var pickedTime by remember {
+                mutableStateOf(LocalTime.now())
+            }
+            MaterialDialog (
+                dialogState = timeDialogState,
+                buttons = {
+                    positiveButton(text = "ok")
+                    negativeButton(text = "Cancel")
+                }
+            ){
+                timepicker(
+                    initialTime = LocalTime.NOON,
+                    title = "Pick a date"
+                ){
+                    pickedTime = it;
+                }
+            }
+            var pickedDate by remember{
+                mutableStateOf(LocalDate.now())
+            }
+            MaterialDialog (
+                dialogState = dateDialogState,
+                buttons = {
+                    positiveButton(text = "ok")
+                    negativeButton(text = "Cancel")
+                }
+            ){
+                datepicker(
+                    initialDate = LocalDate.now(),
+                    title = "Pick a date"
+                ){
+                    pickedDate = it;
+                }
+            }
+
+
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
@@ -98,12 +138,14 @@ fun NewMeeting(navController: NavController) {
                                     })
 
                                     NewMeetingListItem(navController = navController, text = "Data i godzina", onClick = {
+                                        timeDialogState.show()
+                                        dateDialogState.show()
 
                                     })
 
                                     //  ShowTimePicker(context = view ,initHour = 2, initMinute = 2);
 
-                                    DateAndTimePickers();
+                                    DateAndTimePickers(navController);
 
                                     NewMeetingListItem(navController = navController, text = "Opis", onClick = {
 
@@ -137,6 +179,7 @@ fun NewMeeting(navController: NavController) {
                                     })  {
                                         Text(text = "Wybierz kolor")
                                     }
+
                                 }
                             }
                         }
@@ -171,7 +214,7 @@ fun NewMeetingListItem(navController: NavController, text: String, image: Image?
                     }
                 },
                 modifier = Modifier.clickable {
-                    onClick
+                    onClick()
                 }
             )
         }
@@ -180,7 +223,7 @@ fun NewMeetingListItem(navController: NavController, text: String, image: Image?
 }
 
 @Composable
-fun DateAndTimePickers(){
+fun DateAndTimePickers(navController: NavController){
     var pickedDate by remember{
         mutableStateOf(LocalDate.now())
     }
@@ -205,7 +248,13 @@ fun DateAndTimePickers(){
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
 
-
+  /*  NewMeetingListItem(navController = navController, text = "Data -> " + formattedDate, onClick = {
+        dateDialogState.show()
+    })
+    NewMeetingListItem(navController = navController, text = "Godzina -> " + formattedTime, onClick = {
+        timeDialogState.show()
+    })
+    */
     Row(
         modifier = Modifier.fillMaxSize()//,
         // horizontalAlignment = Alignment.CenterHorizontally,
