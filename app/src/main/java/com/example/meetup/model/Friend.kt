@@ -4,4 +4,5 @@ data class Friend(
     val id: String,
     val firstName: String,
     val surname: String,
+    val emailAddress: String
 )

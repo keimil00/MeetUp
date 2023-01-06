@@ -10,7 +10,7 @@ interface FriendsApi {
 
     @POST(HttpRoutes.ADD_FRIENDS)
     suspend fun addFriend(
-        @Query("friendId") friendId: String
+        @Query("friendEmail") friendEmail: String
     )
 
     @GET(HttpRoutes.GET_FRIENDS)

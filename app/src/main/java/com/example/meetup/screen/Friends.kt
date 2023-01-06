@@ -6,21 +6,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meetup.R
@@ -30,24 +32,60 @@ import com.example.meetup.navigation.Screen
 import com.example.meetup.view_model.FriendsViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = hiltViewModel()) {
     LaunchedEffect(Unit, block = {
         friendsViewModel.getFriendsList()
     })
+
+    val dialogState: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+    if (dialogState.value) {
+        Dialog(
+            onDismissRequest = {
+                friendsViewModel.getFriendsList()
+                dialogState.value = false
+            },
+            content = {
+                AddFriendDialog("Add friend", dialogState)
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        )
+    }
+
+
+
     Drawer(navController = navController,
         title = stringResource(id = R.string.friends),
         content = {
-            Box(modifier = Modifier.padding(paddingValues = it)){
+            Box(
+                modifier = Modifier
+                    .padding(paddingValues = it)
+                    .fillMaxSize()
+            ){
                 val notification = rememberSaveable{ mutableStateOf("") }
                 if (notification.value.isNotEmpty()){
                     Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
                     notification.value = ""
                 }
-
+                FloatingActionButton(
+                    onClick = { dialogState.value = true },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = MaterialTheme.shapes.medium,
+                    content = {
+                        Icon(
+                            imageVector = Icons.Filled.Add,
+                            contentDescription = "Add friend"
+                        )
+                    }
+                )
                 Column(modifier = Modifier
-                    .verticalScroll(rememberScrollState())
                     .padding(8.dp)
                 ){
                     LazyColumn(modifier = Modifier.fillMaxWidth()){
@@ -67,8 +105,8 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
 fun FriendListItem(navController: NavController, friend: Friend){ //optionally: user : User
     Column {
         ListItem(
-            headlineText = { Text(friend.firstName) },
-            supportingText = { Text(friend.surname) },
+            headlineText = { Text(friend.firstName + " " + friend.surname) },
+            supportingText = { Text(friend.emailAddress) },
             leadingContent = {
                 // TODO replace this with proper icon
                 Icon(
@@ -86,4 +124,11 @@ fun FriendListItem(navController: NavController, friend: Friend){ //optionally: 
         )
         Divider()
     }
+}
+
+@Composable
+fun refreshFriendsList(friendsViewModel: FriendsViewModel){
+    LaunchedEffect(Unit, block = {
+        friendsViewModel.getFriendsList()
+    })
 }

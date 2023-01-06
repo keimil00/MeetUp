@@ -1,5 +1,6 @@
 package com.example.meetup.authorization
 
+import com.example.meetup.api.AuthApi
 import com.example.meetup.api.FriendsApi
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

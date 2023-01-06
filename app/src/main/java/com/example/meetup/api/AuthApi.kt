@@ -1,5 +1,6 @@
-package com.example.meetup.authorization
+package com.example.meetup.api
 
+import com.example.meetup.authorization.HttpRoutes
 import com.example.meetup.authorization.dto.RegistrationRequest
 import retrofit2.http.Body
 import retrofit2.http.GET

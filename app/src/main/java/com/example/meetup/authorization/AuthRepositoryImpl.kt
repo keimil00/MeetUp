@@ -2,6 +2,7 @@ package com.example.meetup.authorization
 
 import android.content.SharedPreferences
 import android.util.Base64
+import com.example.meetup.api.AuthApi
 import com.example.meetup.authorization.dto.RegistrationRequest
 import retrofit2.HttpException
 
