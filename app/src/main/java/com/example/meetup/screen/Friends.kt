@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -42,7 +43,6 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
     if (dialogState.value) {
         Dialog(
             onDismissRequest = {
-                friendsViewModel.getFriendsList()
                 dialogState.value = false
             },
             content = {
@@ -102,7 +102,8 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FriendListItem(navController: NavController, friend: Friend){ //optionally: user : User
+fun FriendListItem(navController: NavController, friend: Friend){
+    val context = LocalContext.current
     Column {
         ListItem(
             headlineText = { Text(friend.firstName + " " + friend.surname) },
@@ -110,7 +111,7 @@ fun FriendListItem(navController: NavController, friend: Friend){ //optionally: 
             leadingContent = {
                 // TODO replace this with proper icon
                 Icon(
-                    Icons.Filled.Favorite,
+                    painter = painterResource(id = context.resources.getIdentifier("images${friend.id.toInt().mod(71)}", "drawable", context.packageName)),
                     tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "Localized description",
                     modifier = Modifier.size(30.dp)
@@ -124,11 +125,4 @@ fun FriendListItem(navController: NavController, friend: Friend){ //optionally: 
         )
         Divider()
     }
-}
-
-@Composable
-fun refreshFriendsList(friendsViewModel: FriendsViewModel){
-    LaunchedEffect(Unit, block = {
-        friendsViewModel.getFriendsList()
-    })
 }

@@ -1,27 +1,34 @@
 package com.example.meetup.view_model
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meetup.R
+import com.example.meetup.UiText
 import com.example.meetup.api.FriendsApi
 import com.example.meetup.model.Friend
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class FriendsViewModel @Inject constructor(
     private val api: FriendsApi
 ): ViewModel() {
-    private val _friendsList = mutableListOf<Friend>()
-    val fiendsList: List<Friend>
-        get() = _friendsList.toList()
+    private val _friendsList = mutableStateListOf<Friend>()
+    val fiendsList: SnapshotStateList<Friend>
+        get() = _friendsList
     private val resultChannel = Channel<Boolean>()
     val addFriendResultChannel = resultChannel.receiveAsFlow()
-
+    private val errorChannel = Channel<UiText>()
+    val errorMessageChannel = errorChannel.receiveAsFlow()
 
 
     fun getFriendsList() {
@@ -44,8 +51,12 @@ class FriendsViewModel @Inject constructor(
             try {
                 api.addFriend(email)
                 resultChannel.send(true)
-                waitForResult()
-            } catch (e: Exception) {
+                async { waitForResult() }
+            }catch (e: HttpException) {
+                errorChannel.send(handleError(e.code()))
+                resultChannel.send(false)
+            }
+            catch (e: Exception) {
                 e.printStackTrace()
                 resultChannel.send(false)
             }
@@ -61,7 +72,21 @@ class FriendsViewModel @Inject constructor(
                     resultChannel.send(true)
                     break
                 }
-                Thread.sleep(300)
+                delay(300)
+            }
+        }
+    }
+
+    private fun handleError(errCode: Int): UiText {
+        return when (errCode){
+            404 -> {
+                UiText.StringResource(R.string.user_not_found)
+            }
+            409 -> {
+                UiText.StringResource(R.string.already_friends)
+            }
+            else -> {
+                UiText.StringResource(R.string.error_occurred)
             }
         }
     }

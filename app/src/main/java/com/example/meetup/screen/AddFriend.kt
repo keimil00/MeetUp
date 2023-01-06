@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meetup.R
 import com.example.meetup.view_model.FriendsViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
 fun AddFriendDialog(
@@ -30,17 +28,22 @@ fun AddFriendDialog(
 ) {
     val errorMessage = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
+    val context = LocalContext.current
 
-    LaunchedEffect(friendsViewModel, LocalContext.current) {
+    LaunchedEffect(friendsViewModel, context) {
         friendsViewModel.addFriendResultChannel.collect {
             if (it) {
                 dialogState.value = false
-            } else {
-                // TODO give msg based on error
-                errorMessage.value = "Error"
             }
         }
     }
+
+    LaunchedEffect(friendsViewModel, context) {
+        friendsViewModel.errorMessageChannel.collect {
+            errorMessage.value = it.asString(context)
+        }
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
