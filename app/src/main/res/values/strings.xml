@@ -23,5 +23,5 @@
     <string name="error_occurred">"Unknown error occurred"</string>
     <string name="already_friends">"You are already friends"</string>
 
-
+    <string name="permission_location_rationale">In order to show meetings close to you, we require the location permission to be granted.</string>
 </resources>

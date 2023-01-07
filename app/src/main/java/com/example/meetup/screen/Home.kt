@@ -28,6 +28,8 @@ import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.component.MapView
 import com.example.meetup.navigation.Screen
+import com.example.meetup.view_model.PermissionTestViewModel
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
@@ -134,7 +136,8 @@ fun Home (navController: NavController) {
             sheetPeekHeight = 160.dp
         ) {
             // Content behind BottomSheet
-            MapView(Modifier.padding(paddingValues))
+            MapView(Modifier.padding(paddingValues), rememberScaffoldState(),PermissionTestViewModel()
+            )
 
         }
     })

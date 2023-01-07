@@ -46,7 +46,6 @@ fun rememberMapViewWithLifecycle(): MapView {
     val copyrightOverlay = CopyrightOverlay(context)
     mapView.overlays.add(copyrightOverlay)
 
-    // TODO fix my location
     val locationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), mapView)
     locationOverlay.enableMyLocation()
     mapView.overlays.add(locationOverlay)

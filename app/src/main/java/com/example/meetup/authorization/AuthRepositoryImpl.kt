@@ -50,6 +50,7 @@ class AuthRepositoryImpl(
             prefs.edit()
                 .putString("jwt", token)
                 .apply()
+            //api.authenticate()      // added as workaround by Szymon
             AuthResult.Authorized()
         } catch(e: HttpException) {
             if(e.code() == 401) {
