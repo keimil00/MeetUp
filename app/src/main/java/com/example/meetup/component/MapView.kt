@@ -15,7 +15,7 @@ import org.osmdroid.views.MapView
 import com.example.meetup.view_model.PermissionTestViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.example.meetup.component.permission.PermissionAction
+import com.example.meetup.location.permission.PermissionAction
 import androidx.compose.runtime.*
 import com.example.meetup.R
 

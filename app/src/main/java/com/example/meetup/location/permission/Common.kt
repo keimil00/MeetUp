@@ -1,4 +1,4 @@
-package com.example.meetup.component.permission
+package com.example.meetup.location.permission
 
 
 import android.app.Activity

@@ -44,6 +44,8 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewMeeting(navController: NavController) {
+    val context = LocalContext.current
+
     Drawer(
         navController = navController,
         title = stringResource(id = R.string.new_meeting),
@@ -128,6 +130,14 @@ fun NewMeeting(navController: NavController) {
                                 Column(
                                     modifier = Modifier.padding(16.dp)
                                 ) {
+
+                                    // made only to test location reading
+//                                    Button(onClick = {
+//                                        context.startActivity(Intent(context, LocationActivity::class.java))
+//                                    }) {
+//                                        Text(text = "Test location")
+//                                    }
+                                    // ---------
 
                                     NewMeetingListItem(navController = navController, text = "Tytuł", onClick = {
 

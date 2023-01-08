@@ -10,8 +10,8 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import com.example.meetup.component.permission.PermissionAction
-import com.example.meetup.component.permission.Common
+import com.example.meetup.location.permission.PermissionAction
+import com.example.meetup.location.permission.Common
 
 
 private const val TAG = "PermissionUI"
