@@ -36,9 +36,9 @@ fun Drawer(navController: NavController, title: String, content: @Composable (Pa
  val items = listOf(
     MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Home.route),
     MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
-    MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
+    // MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
     MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
-    MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.Home.route),
+    MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.AboutApp.route),
     MenuItem(title = "Wyloguj", Icons.Filled.Logout, Screen.Login.route)
  )
 
