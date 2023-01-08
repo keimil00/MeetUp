@@ -15,6 +15,7 @@
     <string name="add_friend">Add Friend</string>
     <string name="events">Events now</string>
     <string name="new_meeting">New meeting</string>
+    <string name="about_app">About app</string>
 
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
@@ -24,4 +25,6 @@
     <string name="already_friends">"You are already friends"</string>
 
     <string name="permission_location_rationale">In order to show meetings close to you, we require the location permission to be granted.</string>
+    <string name="about_app_description">MeetUp makes it easier to organize meetings and events with other people. You can create events and invite your friends to them.
+    </string>
 </resources>

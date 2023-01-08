@@ -44,6 +44,9 @@ fun Navigation() {
         composable(route = Screen.NewMeeting.route){
             NewMeeting(navController = navController)
         }
+        composable(route = Screen.AboutApp.route){
+            AboutApp(navController = navController)
+        }
 
         // Add new composable with route which is path to a screen and optionally arguments as above
     }
