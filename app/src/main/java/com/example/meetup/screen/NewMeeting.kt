@@ -3,9 +3,17 @@ package com.example.meetup.screen
 import android.annotation.SuppressLint
 import android.media.Image
 import android.widget.Toast
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -23,11 +31,19 @@ import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.Popup
+import com.chargemap.compose.numberpicker.FullHours
+import com.chargemap.compose.numberpicker.Hours
+import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.github.skydoves.colorpicker.compose.*
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.color.ColorPalette
@@ -65,38 +81,23 @@ fun NewMeeting(navController: NavController) {
             var pickedTime by remember {
                 mutableStateOf(LocalTime.now())
             }
-            MaterialDialog (
-                dialogState = timeDialogState,
-                buttons = {
-                    positiveButton(text = "ok")
-                    negativeButton(text = "Cancel")
-                }
-            ){
-                timepicker(
-                    initialTime = LocalTime.NOON,
-                    title = "Pick a date"
-                ){
-                    pickedTime = it;
-                }
-            }
-            var pickedDate by remember{
-                mutableStateOf(LocalDate.now())
-            }
-            MaterialDialog (
-                dialogState = dateDialogState,
-                buttons = {
-                    positiveButton(text = "ok")
-                    negativeButton(text = "Cancel")
-                }
-            ){
-                datepicker(
-                    initialDate = LocalDate.now(),
-                    title = "Pick a date"
-                ){
-                    pickedDate = it;
-                }
-            }
 
+
+            val dialogState: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+            if (dialogState.value) {
+                Dialog(
+                    onDismissRequest = {
+                        dialogState.value = false
+                    },
+                    content = {
+                        AddFriendDialog("Add friend", dialogState)
+                    },
+                    properties = DialogProperties(
+                        dismissOnBackPress = false,
+                        dismissOnClickOutside = false
+                    )
+                )
+            }
 
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -139,57 +140,131 @@ fun NewMeeting(navController: NavController) {
 //                                    }
                                     // ---------
 
-                                    NewMeetingListItem(navController = navController, text = "Tytuł", onClick = {
 
+                                    var text by remember { mutableStateOf(TextFieldValue("")) }
+                                    TextField(
+                                        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
+                                        value = text,
+                                        onValueChange = {
+                                            text = it
+                                        },
+                                        label = { Text(text = "Tytuł") },
+                                        placeholder = { Text(text = "Nadaj tytuł spotkaniu") },
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(20.dp))
+                                    )
+
+                                    NewMeetingListItem(navController = navController, text = "Osoby...", onClick = {
+                                        // TODO: navigate to "add participants screen" or sth similar
                                     })
 
-                                    NewMeetingListItem(navController = navController, text = "Osoby", onClick = {
-
-                                    })
-
-                                    NewMeetingListItem(navController = navController, text = "Data i godzina", onClick = {
-                                        timeDialogState.show()
-                                        dateDialogState.show()
-
-                                    })
-
-                                    //  ShowTimePicker(context = view ,initHour = 2, initMinute = 2);
-
+                                    Spacer(modifier = Modifier.height(16.dp))
                                     DateAndTimePickers(navController);
+                                    Spacer(modifier = Modifier.height(12.dp))
 
-                                    NewMeetingListItem(navController = navController, text = "Opis", onClick = {
+                                    var description by remember { mutableStateOf(TextFieldValue("")) }
+                                    TextField(
+                                        colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
+                                        value = description,
+                                        onValueChange = {
+                                            description = it
+                                        },
+                                        label = { Text(text = "Opis") },
+                                        placeholder = { Text(text = "Dodaj notatkę") },
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(20.dp))
+                                            //.background(Color.White)
+                                    )
+                                    Spacer(modifier = Modifier.height(16.dp))
 
-                                    })
+                                    Card(
+                                        modifier = Modifier
+                                            .padding(start = 32.dp)
+                                            .fillMaxWidth(),
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
 
-                                    NewMeetingListItem(navController = navController, text = "Opis", onClick = {
+                                            )
+                                    ){
+                                        Text(text = "Czas trwania spotkania")
+                                    }
 
-                                    })
+                                    var pickerValue by remember { mutableStateOf<Hours>(FullHours(0, 30)) }
 
+                                    HoursNumberPicker(
+                                        leadingZero = true,
+                                        value = pickerValue,
+                                        onValueChange = {
+                                            pickerValue = it
+                                        },
+                                        hoursDivider = {
+                                            Text(
+                                                modifier = Modifier.size(24.dp),
+                                                textAlign = TextAlign.Center,
+                                                text = "h"
+                                            )
+                                        },
+                                        minutesDivider = {
+                                            Text(
+                                                modifier = Modifier.size(24.dp),
+                                                textAlign = TextAlign.Center,
+                                                text = "m"
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(20.dp)),
+                                    )
+                                   /* NewMeetingListItem(navController = navController, text = "Kolor pinezki", onClick = {
 
-                                    NewMeetingListItem(navController = navController, text = "Powiadomienie", onClick = {
+                                    })*/
+                                    /*
+                                    ColorDialog(
+                                        colorList = ColorPalette.Primary,
+                                        onDismiss = { /*TODO*/ }
+                                    )*/
 
-                                    })
-
-                                    NewMeetingListItem(navController = navController, text = "Kolor pinezki", onClick = {
-
-                                    })
-                                    bigColorPicker();
+                                   // bigColorPicker();
 
                                     val colorDialogState = rememberMaterialDialogState()
 
-                                    val dialogState = rememberMaterialDialogState()
+                                    var pickedColor by remember { mutableStateOf(Color(0xFFF44336)) }
+                                    var pickedColorInt by remember { mutableStateOf(0)}
                                     MaterialDialog(dialogState = colorDialogState) {
-
-                                        colorChooser(colors = ColorPalette.Primary)
-
+                                        colorChooser(
+                                            colors = ColorPalette.Primary,
+                                            initialSelection = pickedColorInt,
+                                            waitForPositiveButton = false,
+                                            onColorSelected = {
+                                                pickedColor = it
+                                                pickedColorInt = ColorPalette.Primary.indexOf(it)
+                                            }
+                                        )
                                     }
 
-                                    Button(onClick = {
-                                        colorDialogState.show()
-                                    })  {
-                                        Text(text = "Wybierz kolor")
+                                    Row(){
+                                        Button(
+                                            modifier = Modifier
+                                                .padding(16.dp)
+                                                .align(Alignment.CenterVertically),
+                                            onClick = {
+                                                colorDialogState.show()
+                                            })  {
+                                            Text(text = "Wybierz kolor pinezki")
+                                        }
+                                        Box(
+                                            modifier = Modifier
+                                                .size(36.dp)
+                                                .align(Alignment.CenterVertically)
+                                                .clip(CircleShape)
+                                                .background(pickedColor)
+                                        )
                                     }
-
                                 }
                             }
                         }
@@ -199,10 +274,79 @@ fun NewMeeting(navController: NavController) {
         })
 }
 
+@Composable
+private fun ColorDialog(
+    colorList: List<Color>,
+    onDismiss: (() -> Unit),
+    currentlySelected: Color,
+    onColorSelected: ((Color) -> Unit) // when a colour is picked
+) {
+    val gridState = rememberLazyGridState()
+
+    AlertDialog(
+        shape = RoundedCornerShape(20.dp),
+        containerColor = MaterialTheme.colorScheme.background,
+        titleContentColor = MaterialTheme.colorScheme.outline,
+        onDismissRequest = onDismiss,
+        text = {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                state = gridState
+            ) {
+                items(colorList) { color ->
+                    // Add a border around the selected colour only
+                    var borderWidth = 0.dp
+                    if (currentlySelected == color) {
+                        borderWidth = 2.dp
+                    }
+
+                    Canvas(modifier = Modifier
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .border(
+                            borderWidth,
+                            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),
+                            RoundedCornerShape(20.dp)
+                        )
+                        .background(color)
+                        .requiredSize(70.dp)
+                        .clickable {
+                            onColorSelected(color)
+                            onDismiss()
+                        }
+                    ) {
+                    }
+                }
+            }
+        },
+        confirmButton = {}
+    )
+}
+
+@Composable
+fun BottomPageButtons(navController: NavController){
+    Row(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Button(onClick = {
+
+        })  {
+            Text(text = "Anuluj")
+        }
+        Button(onClick = {
+
+        })  {
+            Text(text = "Submit")
+        }
+    }
+
+
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewMeetingListItem(navController: NavController, text: String, image: Image? = null, onClick: () -> Unit){ //optionally: user : User
+fun NewMeetingListItem(navController: NavController, text: String, image: Image? = null, onClick: () -> Unit){
     val imageUri = rememberSaveable{mutableStateOf("") }
     Card(
         modifier = Modifier
@@ -216,13 +360,6 @@ fun NewMeetingListItem(navController: NavController, text: String, image: Image?
         Column {
             ListItem(
                 headlineText = { Text(text = text) },
-                leadingContent = {
-                    if (image == null) {
-                        R.drawable.ic_user
-                    } else {
-                        image
-                    }
-                },
                 modifier = Modifier.clickable {
                     onClick()
                 }
@@ -258,13 +395,6 @@ fun DateAndTimePickers(navController: NavController){
     val dateDialogState = rememberMaterialDialogState()
     val timeDialogState = rememberMaterialDialogState()
 
-  /*  NewMeetingListItem(navController = navController, text = "Data -> " + formattedDate, onClick = {
-        dateDialogState.show()
-    })
-    NewMeetingListItem(navController = navController, text = "Godzina -> " + formattedTime, onClick = {
-        timeDialogState.show()
-    })
-    */
     Row(
         modifier = Modifier.fillMaxSize()//,
         // horizontalAlignment = Alignment.CenterHorizontally,
@@ -273,7 +403,8 @@ fun DateAndTimePickers(navController: NavController){
 
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(0.5f),
+            modifier = Modifier
+                .fillMaxWidth(0.47f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
@@ -289,7 +420,7 @@ fun DateAndTimePickers(navController: NavController){
         //  Spacer(modifier = Modifier.height(16.dp))
 
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(0.9f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
