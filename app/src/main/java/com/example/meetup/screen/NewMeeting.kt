@@ -56,6 +56,8 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewMeeting(navController: NavController, eventViewModel : EventViewModel = hiltViewModel()) {
+    LocationStore.refreshLocation(LocalContext.current)
+
     Drawer(
         navController = navController,
         title = stringResource(id = R.string.new_meeting),

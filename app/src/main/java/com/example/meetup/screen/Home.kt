@@ -24,12 +24,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.component.MapView
 import com.example.meetup.location.LocationStore
+import com.example.meetup.model.Event
 import com.example.meetup.navigation.Screen
+import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.PermissionTestViewModel
 
 
@@ -38,12 +41,13 @@ import com.example.meetup.view_model.PermissionTestViewModel
     ExperimentalMaterialApi::class
 )
 @Composable
-fun Home (navController: NavController) {
+fun Home (navController: NavController, eventViewModel: EventViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     // create a store for user location
     LaunchedEffect(Unit, block = {
         LocationStore.createStore(context)
+        LocationStore.refreshLocation(context)
     })
 
     Drawer(navController = navController, title = stringResource(id = R.string.map), content = { paddingValues ->
@@ -111,43 +115,53 @@ fun Home (navController: NavController) {
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,)
+
+                eventViewModel.getEventsList(LocationStore.storedLatitude, LocationStore.storedLongitude)
+
+
                 LazyColumn {
-                    items(10) {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp)
-                                .clip(MaterialTheme.shapes.medium)
-                                .clickable {
-                                    // TODO : Navigate to event details
-                                },
-                            shape = MaterialTheme.shapes.medium,
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            ),
-                            content = {
-                                // Here are used string literals because they will be replaced with real data
-                                Text(text = "Jan Kowalski",
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    modifier = Modifier.padding(10.dp),
-                                    textAlign = TextAlign.Left,)
-                                Text(text = "Idziemy na spacer",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    modifier = Modifier.padding(10.dp),
-                                    textAlign = TextAlign.Left,)
-                            }
-                        )
+                    eventViewModel.eventsList.forEach { event ->
+                        item {
+                            EventCard(event)
+                        }
                     }
                 }
             },
             sheetPeekHeight = 160.dp
         ) {
             // Content behind BottomSheet
-            MapView(Modifier.padding(paddingValues), rememberScaffoldState(),PermissionTestViewModel()
+            MapView(Modifier.padding(paddingValues), rememberScaffoldState(),PermissionTestViewModel(),eventViewModel
             )
 
         }
     })
+}
+
+@Composable
+fun EventCard(event: Event) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable {
+                // TODO : Navigate to event details
+            },
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        ),
+        content = {
+            Text(text = event.name,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(10.dp),
+                textAlign = TextAlign.Left,)
+            Text(text = event.description,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(10.dp),
+                textAlign = TextAlign.Left,)
+        }
+    )
 }
