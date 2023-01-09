@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meetup.UiText
 import com.example.meetup.api.EventsApi
-import com.example.meetup.authorization.dto.RegistrationRequest
 import com.example.meetup.event.dto.NewEventRequestBody
 import com.example.meetup.model.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,10 +26,10 @@ class EventViewModel @Inject constructor(
     val errorMessageChannel = errorChannel.receiveAsFlow()
 
 
-    fun getEventsList() {
+    fun getEventsList(latitude: Double, longitude: Double) {
         viewModelScope.launch {
             try {
-                val result = api.getEvents()
+                val result = api.getEvents(latitude = latitude, longitude = longitude)
                 result.forEach {
                     if (!_eventsList.contains(it)) {
                         _eventsList.add(it)

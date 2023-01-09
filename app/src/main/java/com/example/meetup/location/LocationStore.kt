@@ -1,32 +1,34 @@
 package com.example.meetup.location
 
-import android.app.Activity
 import android.content.Context
-import android.os.Bundle
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
-//class LocationStore(passsedContext: Context)  {
-//    lateinit var fusedLocationClient: FusedLocationProviderClient
-//
-//    init {
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(passsedContext)
-//    }
-//
-//    fun lastLatitude(): Double {
-//        val task = fusedLocationClient.lastLocation
-//        task.addOnSuccessListener {
-//            if (it != null){
-//                return@addOnSuccessListener
-//                it.latitude
-//            }
-//
-//            return@addOnSuccessListener
-//            77.7
-//
-//        }
-//    }
+class LocationStore(passsedContext: Context) {
+    lateinit var fusedLocationClient: FusedLocationProviderClient
+    var storedLatitude: Double = 0.0
+    var storedLongitude: Double = 0.0
+
+    init {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(passsedContext)
+        refreshLocation(passsedContext)
+    }
+
+    fun refreshLocation(passsedContext: Context) {
+        val task = fusedLocationClient.lastLocation
+        task.addOnSuccessListener {
+            if (it != null) {
+                storedLatitude = it.latitude
+                storedLongitude = it.longitude
+            }
+            else {
+                Toast.makeText(passsedContext, "Location null", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
+
 //
 //    private fun fetchLocation() {
 //        val task = fusedLocationClient.lastLocation

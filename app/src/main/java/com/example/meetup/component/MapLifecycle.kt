@@ -14,7 +14,6 @@ import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.CopyrightOverlay
-import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -30,7 +29,7 @@ object RynekCoords {
 fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel = hiltViewModel()): MapView {
     // Getting events
     LaunchedEffect(Unit, block = {
-        eventViewModel.getEventsList()
+        eventViewModel.getEventsList(RynekCoords.RYNEK_LAT, RynekCoords.RYNEK_LON)      // TODO ?
     })
 
     val context = LocalContext.current
@@ -66,18 +65,18 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel = hiltViewModel(
     mapController.setCenter(startPoint)
 
     // one example marker
-    val marker1 = Marker(mapView)
-    marker1.setPosition(GeoPoint(RynekCoords.RYNEK_LAT, RynekCoords.RYNEK_LON))
-    marker1.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-    //marker.setIcon(context.resources.getDrawable(R.drawable.ic_gps_location))
-    marker1.setInfoWindow(null)
-    mapView.getOverlays().add(marker1)
+//    val marker1 = Marker(mapView)
+//    marker1.position = GeoPoint(RynekCoords.RYNEK_LAT, RynekCoords.RYNEK_LON)
+//    marker1.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+//    //marker.setIcon(context.resources.getDrawable(R.drawable.ic_gps_location))
+//    marker1.setInfoWindow(null)
+//    mapView.overlays.add(marker1)
 
 
     // overlay markers from api
     for (event in eventViewModel.eventsList) {
-        val createdMarker = MarkerManager.createMarker(mapView, event.latitude, event.longitude)
-        mapView.getOverlays().add(createdMarker)
+        val createdMarker = MarkerManager.createMarker(mapView, event.latitude, event.longitude, event.name, event.description)
+        mapView.overlays.add(createdMarker)
     }
 
     // rotation gestures and zooming
