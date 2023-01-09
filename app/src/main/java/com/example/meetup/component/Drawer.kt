@@ -34,12 +34,12 @@ fun Drawer(navController: NavController, title: String, content: @Composable (Pa
  val scope = rememberCoroutineScope()
 // icons to mimic drawer destinations
  val items = listOf(
-    MenuItem(title = "Ekran główny", Icons.Filled.Home, Screen.Home.route),
-    MenuItem(title = "Mój profil", Icons.Filled.ManageAccounts, Screen.Profile.route),
+    MenuItem(title = "Home", Icons.Filled.Home, Screen.Home.route),
+    MenuItem(title = "Profile", Icons.Filled.ManageAccounts, Screen.Profile.route),
     // MenuItem(title = "Czaty", Icons.Filled.Chat, Screen.Home.route),
-    MenuItem(title = "Znajomi", Icons.Filled.Person, Screen.Friends.route),
-    MenuItem(title = "O aplikacji", Icons.Filled.Info, Screen.AboutApp.route),
-    MenuItem(title = "Wyloguj", Icons.Filled.Logout, Screen.Login.route)
+    MenuItem(title = "Friends", Icons.Filled.Person, Screen.Friends.route),
+    MenuItem(title = "About", Icons.Filled.Info, Screen.AboutApp.route),
+    MenuItem(title = "Logout", Icons.Filled.Logout, Screen.Login.route)
  )
 
  val selectedItem = remember { mutableStateOf(items[0]) }

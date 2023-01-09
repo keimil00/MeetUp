@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meetup.R
@@ -35,15 +34,17 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.Popup
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
+import com.example.meetup.event.dto.NewEventRequestBody
+import com.example.meetup.navigation.Screen
+import com.example.meetup.view_model.EventViewModel
+import com.example.meetup.view_model.UserViewModel
 import com.github.skydoves.colorpicker.compose.*
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.color.ColorPalette
@@ -52,6 +53,7 @@ import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import io.ktor.server.application.*
+import io.ktor.server.http.*
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -59,45 +61,20 @@ import java.time.format.DateTimeFormatter
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewMeeting(navController: NavController) {
-    val context = LocalContext.current
-
+fun NewMeeting(navController: NavController, eventViewModel : EventViewModel = hiltViewModel()) {
     Drawer(
         navController = navController,
         title = stringResource(id = R.string.new_meeting),
         content = { paddingValues ->
-
-
             var title by remember { mutableStateOf("") }
+            //var participants...
+            //var latitude : Double
+            //var longitude : Double
+            var pickedDate by remember{ mutableStateOf(LocalDate.now()) }
+            var pickedTime by remember { mutableStateOf(LocalTime.now()) }
             var description by remember { mutableStateOf("") }
-            var dateTime by remember { mutableStateOf(LocalDate.now()) }
-            var color by remember { mutableStateOf(Color.Blue) }
-            var time by remember { mutableStateOf(LocalTime.now()) }
-
-
-            val dateDialogState = rememberMaterialDialogState()
-            val timeDialogState = rememberMaterialDialogState()
-
-            var pickedTime by remember {
-                mutableStateOf(LocalTime.now())
-            }
-
-
-            val dialogState: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
-            if (dialogState.value) {
-                Dialog(
-                    onDismissRequest = {
-                        dialogState.value = false
-                    },
-                    content = {
-                        AddFriendDialog("Add friend", dialogState)
-                    },
-                    properties = DialogProperties(
-                        dismissOnBackPress = false,
-                        dismissOnClickOutside = false
-                    )
-                )
-            }
+            var pickedDurationTime by remember { mutableStateOf<Hours>(FullHours(0, 30)) }
+            var pickedColor by remember { mutableStateOf(Color(0xFFF44336)) }
 
             Surface(
                 modifier = Modifier.fillMaxSize(),
@@ -124,7 +101,6 @@ fun NewMeeting(navController: NavController) {
                                     .fillMaxWidth(),
                                 colors = CardDefaults.cardColors(
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
-
                                     ),
                                 shape = MaterialTheme.shapes.large
                             ) {
@@ -140,39 +116,115 @@ fun NewMeeting(navController: NavController) {
 //                                    }
                                     // ---------
 
-
-                                    var text by remember { mutableStateOf(TextFieldValue("")) }
+//Title
                                     TextField(
                                         colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
-                                        value = text,
+                                        value = title,
                                         onValueChange = {
-                                            text = it
+                                            title = it
                                         },
-                                        label = { Text(text = "Tytuł") },
-                                        placeholder = { Text(text = "Nadaj tytuł spotkaniu") },
+                                        label = { Text(text = "Title") },
+                                        placeholder = { Text(text = "Provide the title of the meeting") },
                                         modifier = Modifier
                                             .padding(16.dp)
                                             .fillMaxWidth()
                                             .clip(RoundedCornerShape(20.dp))
                                     )
-
-                                    NewMeetingListItem(navController = navController, text = "Osoby...", onClick = {
+//Participants
+                                    NewMeetingListItem(navController = navController, text = "Participants...", onClick = {
                                         // TODO: navigate to "add participants screen" or sth similar
                                     })
 
                                     Spacer(modifier = Modifier.height(16.dp))
-                                    DateAndTimePickers(navController);
-                                    Spacer(modifier = Modifier.height(12.dp))
+//Date/Time pickers
+                                    val formattedDate by remember {
+                                        derivedStateOf {
+                                            DateTimeFormatter
+                                                .ofPattern("MMM dd yyyy")
+                                                .format(pickedDate)
+                                        }
+                                    }
+                                    val formattedTime by remember {
+                                        derivedStateOf {
+                                            DateTimeFormatter
+                                                .ofPattern("hh:mm")
+                                                .format(pickedTime)
+                                        }
+                                    }
 
-                                    var description by remember { mutableStateOf(TextFieldValue("")) }
+                                    val dateDialogState = rememberMaterialDialogState()
+                                    val timeDialogState = rememberMaterialDialogState()
+
+                                    Row(
+                                        modifier = Modifier.fillMaxSize()
+                                    ) {
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth(0.47f),
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            verticalArrangement = Arrangement.Center
+                                        ){
+                                            Button(onClick = {
+                                                dateDialogState.show()
+                                            })  {
+                                                Text(text = "Pick date")
+                                            }
+                                            Text(text = formattedDate)
+                                        }
+
+                                        Column(
+                                            modifier = Modifier.fillMaxWidth(0.9f),
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            verticalArrangement = Arrangement.Center
+                                        ){
+                                            Button(onClick = {
+                                                timeDialogState.show()
+                                            }) {
+                                                Text(text = "Pick time")
+                                            }
+                                            Text(text = formattedTime)
+                                        }
+                                    }
+
+                                    MaterialDialog (
+                                        dialogState = dateDialogState,
+                                        buttons = {
+                                            positiveButton(text = "ok")
+                                            negativeButton(text = "Cancel")
+                                        }
+                                    ){
+                                        datepicker(
+                                            initialDate = LocalDate.now(),
+                                            title = "Pick a date"
+                                        ){
+                                            pickedDate = it;
+                                        }
+                                    }
+                                    MaterialDialog (
+                                        dialogState = timeDialogState,
+                                        buttons = {
+                                            positiveButton(text = "ok")
+                                            negativeButton(text = "Cancel")
+                                        }
+                                    ){
+                                        timepicker(
+                                            initialTime = LocalTime.NOON,
+                                            title = "Pick a date"
+                                        ){
+                                            pickedTime = it;
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(12.dp))
+//Description
                                     TextField(
                                         colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White),
                                         value = description,
                                         onValueChange = {
                                             description = it
                                         },
-                                        label = { Text(text = "Opis") },
-                                        placeholder = { Text(text = "Dodaj notatkę") },
+                                        label = { Text(text = "Description") },
+                                        placeholder = { Text(text = "Add some notes") },
                                         modifier = Modifier
                                             .padding(16.dp)
                                             .fillMaxWidth()
@@ -180,26 +232,23 @@ fun NewMeeting(navController: NavController) {
                                             //.background(Color.White)
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
-
+//Duration
                                     Card(
                                         modifier = Modifier
                                             .padding(start = 32.dp)
                                             .fillMaxWidth(),
                                         colors = CardDefaults.cardColors(
                                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-
                                             )
                                     ){
-                                        Text(text = "Czas trwania spotkania")
+                                        Text(text = "Duration of meeting")
                                     }
-
-                                    var pickerValue by remember { mutableStateOf<Hours>(FullHours(0, 30)) }
 
                                     HoursNumberPicker(
                                         leadingZero = true,
-                                        value = pickerValue,
+                                        value = pickedDurationTime,
                                         onValueChange = {
-                                            pickerValue = it
+                                            pickedDurationTime = it
                                         },
                                         hoursDivider = {
                                             Text(
@@ -220,20 +269,9 @@ fun NewMeeting(navController: NavController) {
                                             .fillMaxWidth()
                                             .clip(RoundedCornerShape(20.dp)),
                                     )
-                                   /* NewMeetingListItem(navController = navController, text = "Kolor pinezki", onClick = {
-
-                                    })*/
-                                    /*
-                                    ColorDialog(
-                                        colorList = ColorPalette.Primary,
-                                        onDismiss = { /*TODO*/ }
-                                    )*/
-
-                                   // bigColorPicker();
-
+//Color picker
                                     val colorDialogState = rememberMaterialDialogState()
 
-                                    var pickedColor by remember { mutableStateOf(Color(0xFFF44336)) }
                                     var pickedColorInt by remember { mutableStateOf(0)}
                                     MaterialDialog(dialogState = colorDialogState) {
                                         colorChooser(
@@ -255,7 +293,7 @@ fun NewMeeting(navController: NavController) {
                                             onClick = {
                                                 colorDialogState.show()
                                             })  {
-                                            Text(text = "Wybierz kolor pinezki")
+                                            Text(text = "Choose pin color")
                                         }
                                         Box(
                                             modifier = Modifier
@@ -265,6 +303,39 @@ fun NewMeeting(navController: NavController) {
                                                 .background(pickedColor)
                                         )
                                     }
+//Cancel/Submit buttons
+/*
+LaunchedEffect(Unit, block = {
+        userViewModel.getCurrentUser()
+}
+)*/
+                                    Row(
+                                        modifier = Modifier
+                                            .padding(16.dp)
+                                            .fillMaxSize(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Button(onClick = {
+                                            navController.navigate(Screen.Home.route)
+                                        })  {
+                                            Text(text = "Cancel")
+                                        }
+                                        Button(onClick = {
+                                            eventViewModel.createEvent(
+                                             NewEventRequestBody(
+                                                name = title,
+                                                date = pickedDate.atTime(pickedTime).toString(),
+                                                durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
+                                                latitude = 17.1.toDouble(),//latitude,
+                                                longitude = 51.1.toDouble(),//longitude
+                                                description = description,
+                                                color = pickedColor.toString()
+                                            ))
+                                            //TODO: add participants... and getting long- and latitude
+                                        })  {
+                                            Text(text = "Submit")
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -272,75 +343,6 @@ fun NewMeeting(navController: NavController) {
                 }
             }
         })
-}
-
-@Composable
-private fun ColorDialog(
-    colorList: List<Color>,
-    onDismiss: (() -> Unit),
-    currentlySelected: Color,
-    onColorSelected: ((Color) -> Unit) // when a colour is picked
-) {
-    val gridState = rememberLazyGridState()
-
-    AlertDialog(
-        shape = RoundedCornerShape(20.dp),
-        containerColor = MaterialTheme.colorScheme.background,
-        titleContentColor = MaterialTheme.colorScheme.outline,
-        onDismissRequest = onDismiss,
-        text = {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                state = gridState
-            ) {
-                items(colorList) { color ->
-                    // Add a border around the selected colour only
-                    var borderWidth = 0.dp
-                    if (currentlySelected == color) {
-                        borderWidth = 2.dp
-                    }
-
-                    Canvas(modifier = Modifier
-                        .padding(16.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .border(
-                            borderWidth,
-                            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f),
-                            RoundedCornerShape(20.dp)
-                        )
-                        .background(color)
-                        .requiredSize(70.dp)
-                        .clickable {
-                            onColorSelected(color)
-                            onDismiss()
-                        }
-                    ) {
-                    }
-                }
-            }
-        },
-        confirmButton = {}
-    )
-}
-
-@Composable
-fun BottomPageButtons(navController: NavController){
-    Row(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Button(onClick = {
-
-        })  {
-            Text(text = "Anuluj")
-        }
-        Button(onClick = {
-
-        })  {
-            Text(text = "Submit")
-        }
-    }
-
-
 }
 
 
@@ -367,237 +369,4 @@ fun NewMeetingListItem(navController: NavController, text: String, image: Image?
         }
     }
     //Divider()
-}
-
-@Composable
-fun DateAndTimePickers(navController: NavController){
-    var pickedDate by remember{
-        mutableStateOf(LocalDate.now())
-    }
-    var pickedTime by remember {
-        mutableStateOf(LocalTime.now())
-    }
-    val formattedDate by remember {
-        derivedStateOf {
-            DateTimeFormatter
-                .ofPattern("MMM dd yyyy")
-                .format(pickedDate)
-        }
-    }
-    val formattedTime by remember {
-        derivedStateOf {
-            DateTimeFormatter
-                .ofPattern("hh:mm")
-                .format(pickedTime)
-        }
-    }
-
-    val dateDialogState = rememberMaterialDialogState()
-    val timeDialogState = rememberMaterialDialogState()
-
-    Row(
-        modifier = Modifier.fillMaxSize()//,
-        // horizontalAlignment = Alignment.CenterHorizontally,
-        // verticalArrangement = Arrangement.Center
-
-
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(0.47f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ){
-            Button(onClick = {
-                dateDialogState.show()
-            })  {
-                Text(text = "Wybierz datę")
-            }
-            Text(text = formattedDate)
-        }
-
-        //  Spacer(modifier = Modifier.height(16.dp))
-        //  Spacer(modifier = Modifier.height(16.dp))
-
-        Column(
-            modifier = Modifier.fillMaxWidth(0.9f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ){
-            Button(onClick = {
-                timeDialogState.show()
-            }) {
-                Text(text = "Wybierz godzinę")
-            }
-            Text(text = formattedTime)
-        }
-    }
-
-    MaterialDialog (
-        dialogState = dateDialogState,
-        buttons = {
-            positiveButton(text = "ok")
-            negativeButton(text = "Cancel")
-        }
-    ){
-        datepicker(
-            initialDate = LocalDate.now(),
-            title = "Pick a date"
-        ){
-            pickedDate = it;
-        }
-    }
-    MaterialDialog (
-        dialogState = timeDialogState,
-        buttons = {
-            positiveButton(text = "ok")
-            negativeButton(text = "Cancel")
-        }
-    ){
-        timepicker(
-            initialTime = LocalTime.NOON,
-            title = "Pick a date"
-        ){
-            pickedTime = it;
-        }
-    }
-
-}
-
-
-@Composable
-fun bigColorPicker() {
-    // on below line we are creating a variable for controller
-    val controller = rememberColorPickerController()
-    val context = LocalContext.current
-
-
-    var popupControl by remember {
-        mutableStateOf(false)
-    }
-
-    // on below line we are creating a column,
-    Column(
-        // on below line we are adding a modifier to it,
-        modifier = Modifier
-            .fillMaxSize()
-            // on below line we are adding a padding.
-            .padding(all = 30.dp)
-    ) {
-        // on below line we are adding a row.
-        Row(
-            // on below line we are adding a modifier
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    Toast
-                        .makeText(
-                            context,
-                            controller.selectedColor.toString(),
-                            Toast.LENGTH_LONG
-                        )
-                        .show();
-                },
-            // on below line we are adding horizontal
-            // and vertical alignment.
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // on below line we are adding a alpha tile.
-            AlphaTile(
-                // on below line we are
-                // adding modifier to it
-                modifier = Modifier
-                    .fillMaxWidth()
-                    // on below line
-                    // we are adding a height.
-                    .height(60.dp)
-                    // on below line we are adding clip.
-                    .clip(RoundedCornerShape(6.dp))
-                    .clickable {
-                        popupControl = true;
-                    },
-                // on below line we are adding controller.
-                controller = controller,
-
-                )
-        }
-        if(popupControl)
-        {
-            Popup(
-                onDismissRequest = {popupControl = false}
-            ) {
-                Column(
-                    // on below line we are adding a modifier to it,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        // on below line we are adding a padding.
-                        .padding(all = 30.dp)
-                ) {
-                    // on below line we are
-                    // adding horizontal color picker.
-                    HsvColorPicker(
-                        // on below line we are
-                        // adding a modifier to it
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(450.dp)
-                            .padding(10.dp),
-                        // on below line we are
-                        // adding a controller
-                        controller = controller,
-                        // on below line we are
-                        // adding on color changed.
-                        onColorChanged = {}
-                    )
-                }
-            }
-        }
-        /*
-        // on below line we are
-        // adding horizontal color picker.
-        HsvColorPicker(
-            // on below line we are
-            // adding a modifier to it
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(450.dp)
-                .padding(10.dp),
-            // on below line we are
-            // adding a controller
-            controller = controller,
-            // on below line we are
-            // adding on color changed.
-            onColorChanged = {}
-        )
-        // on below line we are adding a alpha slider.
-        AlphaSlider(
-            // on below line we
-            // are adding a modifier to it.
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .height(35.dp),
-            // on below line we are
-            // adding a controller.
-            controller = controller,
-            // on below line we are
-            // adding odd and even color.
-            tileOddColor = Color.White,
-            tileEvenColor = Color.Black
-        )
-        // on below line we are
-        // adding a brightness slider.
-        BrightnessSlider(
-            // on below line we
-            // are adding a modifier to it.
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-                .height(35.dp),
-            // on below line we are
-            // adding a controller.
-            controller = controller,
-        )*/
-    }
 }

@@ -48,9 +48,6 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
         var firstName = userViewModel.currentUser.firstName // by rememberSaveable {mutableStateOf("")}
         var lastName = userViewModel.currentUser.lastName
 
-
-
-
         Text(text = "Profil")
         Box(modifier = Modifier.fillMaxSize())
         {
@@ -78,24 +75,7 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
                         .verticalScroll(rememberScrollState())
                         .padding(8.dp)
                 ) {
-                   /* Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(text = "Anuluj",
-                            modifier = Modifier.clickable {
-                                notification.value = "Anulowano zmiany"
-                            })
-                        Text(text = "Zapisz",
-                            modifier = Modifier.clickable {
-                                notification.value = "Zapisano zmiany"
-                            })
-                    }*/
-
                     ProfileImage()
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -126,7 +106,7 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
                             .fillMaxWidth()
                             .height(BUTTON_HEIGHT.dp)
                     ) {
-                        Text(text = "Znajomi", fontSize = BUTTON_FONT_SIZE.sp)
+                        Text(text = "Friends", fontSize = BUTTON_FONT_SIZE.sp)
                     }
                 }
             }
@@ -173,6 +153,5 @@ fun ProfileImage(){
             )
 
         }
-       // Text(text = "Zmień zdjęcie profilowe")
     }
 }

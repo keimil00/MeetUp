@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meetup.UiText
 import com.example.meetup.api.EventsApi
+import com.example.meetup.authorization.dto.RegistrationRequest
+import com.example.meetup.event.dto.NewEventRequestBody
 import com.example.meetup.model.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -34,6 +36,16 @@ class EventViewModel @Inject constructor(
                         _eventsList.add(it)
                     }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun createEvent(request : NewEventRequestBody ) {
+        viewModelScope.launch {
+            try {
+                val result = api.createEvent( request )
             } catch (e: Exception) {
                 e.printStackTrace()
             }
