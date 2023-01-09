@@ -5,12 +5,13 @@ import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
-class LocationStore(passsedContext: Context) {
+object LocationStore {
+    // Singleton pattern to provide easy access to location everywhere
     lateinit var fusedLocationClient: FusedLocationProviderClient
     var storedLatitude: Double = 0.0
     var storedLongitude: Double = 0.0
 
-    init {
+    fun createStore(passsedContext: Context) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(passsedContext)
         refreshLocation(passsedContext)
     }
@@ -28,18 +29,3 @@ class LocationStore(passsedContext: Context) {
         }
     }
 }
-
-//
-//    private fun fetchLocation() {
-//        val task = fusedLocationClient.lastLocation
-//
-//        task.addOnSuccessListener {
-//            if (it != null){
-//                Toast.makeText(applicationContext, "Lat is: ${it.latitude}, Lon is: ${it.longitude}", Toast.LENGTH_SHORT).show()
-//            }
-//            else {
-//                Toast.makeText(applicationContext, "Location null", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-//}

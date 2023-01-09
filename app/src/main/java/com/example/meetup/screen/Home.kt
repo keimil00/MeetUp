@@ -19,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.component.MapView
+import com.example.meetup.location.LocationStore
 import com.example.meetup.navigation.Screen
 import com.example.meetup.view_model.PermissionTestViewModel
 
@@ -37,6 +39,13 @@ import com.example.meetup.view_model.PermissionTestViewModel
 )
 @Composable
 fun Home (navController: NavController) {
+    val context = LocalContext.current
+
+    // create a store for user location
+    LaunchedEffect(Unit, block = {
+        LocationStore.createStore(context)
+    })
+
     Drawer(navController = navController, title = stringResource(id = R.string.map), content = { paddingValues ->
         val scope = rememberCoroutineScope()
 
@@ -110,7 +119,7 @@ fun Home (navController: NavController) {
                                 .padding(10.dp)
                                 .clip(MaterialTheme.shapes.medium)
                                 .clickable {
-                                  // TODO : Navigate to event details
+                                    // TODO : Navigate to event details
                                 },
                             shape = MaterialTheme.shapes.medium,
                             colors = CardDefaults.cardColors(

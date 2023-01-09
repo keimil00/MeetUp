@@ -2,17 +2,10 @@ package com.example.meetup.screen
 
 import android.annotation.SuppressLint
 import android.media.Image
-import android.widget.Toast
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.filled.*
@@ -42,6 +35,7 @@ import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.example.meetup.event.dto.NewEventRequestBody
+import com.example.meetup.location.LocationStore
 import com.example.meetup.navigation.Screen
 import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.UserViewModel
@@ -326,8 +320,8 @@ LaunchedEffect(Unit, block = {
                                                 name = title,
                                                 date = pickedDate.atTime(pickedTime).toString(),
                                                 durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
-                                                latitude = 17.1.toDouble(),//latitude,
-                                                longitude = 51.1.toDouble(),//longitude
+                                                latitude = LocationStore.storedLatitude,
+                                                longitude = LocationStore.storedLongitude,
                                                 description = description,
                                                 color = pickedColor.toString()
                                             ))

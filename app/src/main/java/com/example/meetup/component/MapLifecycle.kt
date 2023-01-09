@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.example.meetup.location.LocationStore
 import com.example.meetup.location.MarkerManager
 import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
@@ -61,7 +62,7 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel = hiltViewModel(
     // if no location, default starting place in Wroclaw
     val mapController: IMapController = mapView.controller
     mapController.setZoom(10.5)
-    val startPoint = GeoPoint(RynekCoords.RYNEK_LAT, RynekCoords.RYNEK_LON)
+    val startPoint = GeoPoint(LocationStore.storedLatitude, LocationStore.storedLongitude)
     mapController.setCenter(startPoint)
 
     // one example marker
