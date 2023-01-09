@@ -27,6 +27,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meetup.R
+import com.example.meetup.component.AddFriendDialog
 import com.example.meetup.component.Drawer
 import com.example.meetup.model.Friend
 import com.example.meetup.navigation.Screen
@@ -89,7 +90,7 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
                     .padding(8.dp)
                 ){
                     LazyColumn(modifier = Modifier.fillMaxWidth()){
-                        items(friendsViewModel.fiendsList) {
+                        items(friendsViewModel.friendsList) {
                             friend -> FriendListItem(navController = navController, friend = friend)
                         }
                     }
@@ -109,9 +110,11 @@ fun FriendListItem(navController: NavController, friend: Friend){
             headlineText = { Text(friend.firstName + " " + friend.surname) },
             supportingText = { Text(friend.emailAddress) },
             leadingContent = {
-                // TODO replace this with proper icon
                 Icon(
-                    painter = painterResource(id = context.resources.getIdentifier("images${friend.id.toInt().mod(71)}", "drawable", context.packageName)),
+                    painter = painterResource(
+                        id = context.resources.getIdentifier(
+                                "images${friend.id.toInt().mod(71)}",
+                                "drawable", context.packageName)),
                     tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "Localized description",
                     modifier = Modifier.size(30.dp)
@@ -119,7 +122,7 @@ fun FriendListItem(navController: NavController, friend: Friend){
             },
             modifier = Modifier.clickable {
                 navController.navigate(
-                    // TODO What can we show about another user?
+                    // TODO What can we show about another user? Nothing for now
                     Screen.Profile.route//(user)
                 ) }
         )

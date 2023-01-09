@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.meetup.screen
+package com.example.meetup.component
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meetup.R
+import com.example.meetup.screen.BUTTON_FONT_SIZE
 import com.example.meetup.view_model.FriendsViewModel
 
 @Composable
@@ -74,7 +75,7 @@ fun AddFriendDialog(
 }
 
 @Composable
-private fun TitleAndButton(title: String, dialogState: MutableState<Boolean>) {
+fun TitleAndButton(title: String, dialogState: MutableState<Boolean>) {
     Column {
         Row(
             modifier = Modifier
@@ -147,7 +148,7 @@ private fun AddBody(email: MutableState<String>, errMsg: MutableState<String>) {
         modifier = Modifier
             .padding(20.dp)
     ) {
-        TextField(
+        TextField (
             value = email.value,
             onValueChange = { email.value = it },
             label = { Text(text = stringResource(id = R.string.enter_email)) },

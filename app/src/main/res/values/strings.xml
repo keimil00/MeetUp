@@ -23,6 +23,7 @@
     <string name="user_not_found">"User not found"</string>
     <string name="error_occurred">"Unknown error occurred"</string>
     <string name="already_friends">"You are already friends"</string>
+    <string name="add_participants">"Add participants"</string>
 
     <string name="permission_location_rationale">In order to show meetings close to you, we require the location permission to be granted.</string>
     <string name="about_app_description">MeetUp makes it easier to organize meetings and events with other people. You can create events and invite your friends to them.

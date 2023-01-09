@@ -1,10 +1,7 @@
 package com.example.meetup.view_model
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meetup.R
@@ -23,7 +20,7 @@ class FriendsViewModel @Inject constructor(
     private val api: FriendsApi
 ): ViewModel() {
     private val _friendsList = mutableStateListOf<Friend>()
-    val fiendsList: SnapshotStateList<Friend>
+    val friendsList: SnapshotStateList<Friend>
         get() = _friendsList
     private val resultChannel = Channel<Boolean>()
     val addFriendResultChannel = resultChannel.receiveAsFlow()

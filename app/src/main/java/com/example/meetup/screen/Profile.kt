@@ -53,9 +53,8 @@ fun Profile (navController: NavController, userViewModel: UserViewModel = hiltVi
         {
             Card(
                 modifier = Modifier
-                    .padding(top = 80.dp)
-                    .padding(bottom = 20.dp)
-                    .padding(horizontal = 20.dp)
+                    .padding(it)
+                    .padding(horizontal = 20.dp, vertical = 40.dp)
                     .fillMaxWidth()
                     .fillMaxHeight(),
                 colors = CardDefaults.cardColors(

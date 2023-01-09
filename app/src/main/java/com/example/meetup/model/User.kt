@@ -1,11 +1,5 @@
 package com.example.meetup.model
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Icon
-import android.icu.number.IntegerWidth
-import androidx.compose.ui.graphics.vector.ImageVector
-import java.util.Date
-
 data class User(
     //val image: Bitmap?,
     //val birthday: Date?,

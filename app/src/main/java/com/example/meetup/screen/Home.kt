@@ -53,10 +53,6 @@ fun Home (navController: NavController) {
             bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
         )
 
-        val floatingActionButton = FloatingActionButton(onClick = {}) {
-            Icon(Icons.Filled.Add, contentDescription = "Add")
-        }
-
         BottomSheetScaffold(
             scaffoldState = bottomSheetScaffoldState,
             sheetShape = MaterialTheme.shapes.medium,
