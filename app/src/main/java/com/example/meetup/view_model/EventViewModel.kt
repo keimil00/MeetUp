@@ -53,6 +53,7 @@ class EventViewModel @Inject constructor(
     }
 
     fun getEventById(searchedID: Int?): Event? {
+        // made because of lack of endpoint in api
         getEventsList(LocationStore.storedLatitude, LocationStore.storedLongitude)
 
         return eventsList.firstOrNull { it.id == searchedID }

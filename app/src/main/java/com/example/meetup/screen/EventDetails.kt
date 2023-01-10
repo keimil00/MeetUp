@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -21,18 +22,38 @@ import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.model.Event
 import com.example.meetup.view_model.EventViewModel
+import com.example.meetup.view_model.FriendsViewModel
+import com.example.meetup.view_model.UserViewModel
 
 @Composable
 fun EventDetails(
     navController: NavController,
     eventId: Int,
-    eventViewModel: EventViewModel = hiltViewModel()
+    eventViewModel: EventViewModel = hiltViewModel(),
+    friendsViewModel: FriendsViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit, block = {
+        userViewModel.getCurrentUser()
+    })
     val displayedEvent = eventViewModel.getEventById(eventId)
 
-    Drawer(navController = navController, title = stringResource(id = R.string.profile)) {
-        Box(modifier = Modifier.fillMaxSize())
-        {
+    var ownerFirstName: String
+    var ownerSurname: String
+    var ownerId = displayedEvent?.ownerId
+
+    // Check if event was created by this user, or his friend
+    if (displayedEvent?.ownerId == userViewModel.currentUser.id) {
+        ownerFirstName = userViewModel.currentUser.firstName
+        ownerSurname = userViewModel.currentUser.lastName
+    }
+    else {
+        ownerFirstName = friendsViewModel.getFriendById(displayedEvent?.ownerId)?.firstName ?: ""
+        ownerSurname = friendsViewModel.getFriendById(displayedEvent?.ownerId)?.firstName ?: ""
+    }
+
+    Drawer(navController = navController, title = stringResource(id = R.string.event_details)) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Card(
                 modifier = Modifier
                     .padding(top = 80.dp)
@@ -85,7 +106,24 @@ fun EventDetails(
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 4.dp, end = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "${ownerFirstName} ${ownerSurname} invited you",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                     Spacer(modifier = Modifier.size(10.dp))
+                }
+            }
+        }
+    }
+}
 //                    Button(
 //                        onClick = {
 //                            // TODO go to map and locate this marker
@@ -100,8 +138,3 @@ fun EventDetails(
 //                    ) {
 //                        Text(text = "Locate on map", fontSize = BUTTON_FONT_SIZE.sp)
 //                    }
-                }
-            }
-        }
-    }
-}

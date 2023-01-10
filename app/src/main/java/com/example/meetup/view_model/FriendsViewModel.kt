@@ -90,4 +90,11 @@ class FriendsViewModel @Inject constructor(
             }
         }
     }
+
+    fun getFriendById(searchedID: Int?): Friend? {
+        // made because of lack of endpoint in api
+        getFriendsList()
+
+        return fiendsList.firstOrNull { it.id.toInt() == searchedID }
+    }
 }
