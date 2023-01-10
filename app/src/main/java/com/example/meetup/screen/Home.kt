@@ -125,6 +125,7 @@ fun Home (navController: NavController, eventViewModel: EventViewModel = hiltVie
                         }
                     }
                 }
+
             },
             sheetPeekHeight = 160.dp
         ) {
@@ -145,7 +146,7 @@ fun EventCard(event: Event, navController: NavController) {
             .clip(MaterialTheme.shapes.medium)
             .clickable {
                 navController.navigate(
-                    Screen.EventDetails.withArgs(event.name)   // TODO param
+                    Screen.EventDetails.withArgs(event.id.toString())   // TODO param
                 )
             },
         shape = MaterialTheme.shapes.medium,
@@ -159,7 +160,7 @@ fun EventCard(event: Event, navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(10.dp),
                 textAlign = TextAlign.Left,)
-            Text(text = event.description,
+            Text(text = event.id.toString(),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(10.dp),
                 textAlign = TextAlign.Left,)

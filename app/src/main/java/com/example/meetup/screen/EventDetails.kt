@@ -21,7 +21,7 @@ import com.example.meetup.component.Drawer
 import com.example.meetup.model.Event
 
 @Composable
-fun EventDetails(navController: NavController, eventName: String?) {
+fun EventDetails(navController: NavController, eventId: Int?) {
     Drawer(navController = navController, title = stringResource(id = R.string.profile)) {
         Box(modifier = Modifier.fillMaxSize())
         {
@@ -55,8 +55,8 @@ fun EventDetails(navController: NavController, eventName: String?) {
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (eventName != null) {
-                            Text(text = eventName, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
+                        if (eventId != null) {
+                            Text(text = eventId.toString(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
                         }
                         else {
                             Text(text = "Example event", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
@@ -69,7 +69,7 @@ fun EventDetails(navController: NavController, eventName: String?) {
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = eventName.toString(), textAlign = TextAlign.Center,  modifier = Modifier.fillMaxWidth())
+                        Text(text = eventId.toString(), textAlign = TextAlign.Center,  modifier = Modifier.fillMaxWidth())
                     }
                     Spacer(modifier = Modifier.size(10.dp))
 //                    Button(

@@ -10,7 +10,7 @@ sealed class Screen(val route: String) {
     object NewMeeting: Screen("new_meeting")
     object AboutApp: Screen("about_app")
     object EventDetails: Screen("event_details") {
-        val eventName = "eventName"
+        val eventId = "eventId"
     }
 
     // Add new object with new Activity as shown above
