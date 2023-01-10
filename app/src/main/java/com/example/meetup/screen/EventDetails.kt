@@ -15,13 +15,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.model.Event
+import com.example.meetup.view_model.EventViewModel
 
 @Composable
-fun EventDetails(navController: NavController, eventId: Int?) {
+fun EventDetails(
+    navController: NavController,
+    eventId: Int,
+    eventViewModel: EventViewModel = hiltViewModel()
+) {
+    val displayedEvent = eventViewModel.getEventById(eventId)
+
     Drawer(navController = navController, title = stringResource(id = R.string.profile)) {
         Box(modifier = Modifier.fillMaxSize())
         {
@@ -55,12 +63,14 @@ fun EventDetails(navController: NavController, eventId: Int?) {
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        if (eventId != null) {
-                            Text(text = eventId.toString(), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
-                        }
-                        else {
-                            Text(text = "Example event", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
-                        }
+                        Text(
+                            // Fuszera - if null display empty string (looks OK in app)
+                            text = displayedEvent?.name ?: "",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth(),
+                            fontSize = 40.sp
+                        )
+
                     }
                     Spacer(modifier = Modifier.size(10.dp))
                     Row(
@@ -69,7 +79,11 @@ fun EventDetails(navController: NavController, eventId: Int?) {
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = eventId.toString(), textAlign = TextAlign.Center,  modifier = Modifier.fillMaxWidth())
+                        Text(
+                            text = displayedEvent?.description ?: "",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                     Spacer(modifier = Modifier.size(10.dp))
 //                    Button(

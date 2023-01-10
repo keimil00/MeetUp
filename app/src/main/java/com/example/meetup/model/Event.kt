@@ -5,6 +5,7 @@ package com.example.meetup.model
 data class Event(
     val id: Int,
     val name: String,
+    val ownerId: Int,
     val date: String,
     val durationInSeconds: Int,
     val latitude: Double,

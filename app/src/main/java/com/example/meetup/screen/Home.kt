@@ -160,7 +160,7 @@ fun EventCard(event: Event, navController: NavController) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(10.dp),
                 textAlign = TextAlign.Left,)
-            Text(text = event.id.toString(),
+            Text(text = event.ownerId.toString(),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(10.dp),
                 textAlign = TextAlign.Left,)
