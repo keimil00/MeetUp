@@ -71,7 +71,6 @@ fun Home (navController: NavController, eventViewModel: EventViewModel = hiltVie
                 FloatingActionButton(
                     modifier = Modifier.absoluteOffset(x = 0.dp, y = (-100).dp),
                     onClick = {
-                        // TODO: Add event
                         navController.navigate(
                             Screen.NewMeeting.route
                         )
@@ -122,7 +121,7 @@ fun Home (navController: NavController, eventViewModel: EventViewModel = hiltVie
                 LazyColumn {
                     eventViewModel.eventsList.forEach { event ->
                         item {
-                            EventCard(event)
+                            EventCard(event, navController)
                         }
                     }
                 }
@@ -138,14 +137,16 @@ fun Home (navController: NavController, eventViewModel: EventViewModel = hiltVie
 }
 
 @Composable
-fun EventCard(event: Event) {
+fun EventCard(event: Event, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .clip(MaterialTheme.shapes.medium)
             .clickable {
-                // TODO : Navigate to event details
+                navController.navigate(
+                    Screen.EventDetails.withArgs(event.name)   // TODO param
+                )
             },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(

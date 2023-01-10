@@ -47,6 +47,21 @@ fun Navigation() {
         composable(route = Screen.AboutApp.route){
             AboutApp(navController = navController)
         }
+        composable(
+            route = Screen.EventDetails.route + "/{eventName}",
+            arguments = listOf(
+                navArgument("eventName") {
+                    type = NavType.StringType   // TODO maybe Reference type - check how it works - SZ
+                    nullable = true
+                }
+            )
+            ){
+            navBackStackEntry ->
+            val args = navBackStackEntry.arguments
+            val eventName = args?.getString("eventName")!!
+
+            EventDetails(navController = navController, eventName = eventName)
+        }
 
         // Add new composable with route which is path to a screen and optionally arguments as above
     }

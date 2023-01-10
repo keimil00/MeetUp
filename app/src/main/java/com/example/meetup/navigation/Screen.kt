@@ -9,6 +9,9 @@ sealed class Screen(val route: String) {
     object Friends: Screen("friends")
     object NewMeeting: Screen("new_meeting")
     object AboutApp: Screen("about_app")
+    object EventDetails: Screen("event_details") {
+        val eventName = "eventName"
+    }
 
     // Add new object with new Activity as shown above
 
@@ -17,6 +20,16 @@ sealed class Screen(val route: String) {
             append(route)
             args.forEach { arg ->
                 append("/$arg")
+            }
+        }
+    }
+
+    // build and setup route format (in navigation graph)
+    fun withArgsFormat(vararg args: String) : String {
+        return buildString {
+            append(route)
+            args.forEach{ arg ->
+                append("/{$arg}")
             }
         }
     }
