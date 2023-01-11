@@ -10,4 +10,5 @@ object HttpRoutes {
     const val USER_INFO = "$BASE_URL/users/current"
     const val GET_NEARBY_EVENTS = "$BASE_URL/get_nearby_events"
     const val CREATE_EVENT = "$BASE_URL/create_event"
+    const val ADD_PARTICIPANTS = "$BASE_URL/add_participants"
 }

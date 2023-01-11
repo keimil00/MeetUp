@@ -41,7 +41,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun createEvent(request : NewEventRequestBody ) {
+    fun createEvent(request : NewEventRequestBody, participants: List<Int>) {
         viewModelScope.launch {
             try {
                 val result = api.createEvent( request )
@@ -52,5 +52,16 @@ class EventViewModel @Inject constructor(
     }
 
     // TODO add creating event
+
+    fun add_participants(eventId: Int, participants: List<Int>) {
+        viewModelScope.launch {
+            try {
+                val result = api.addParticipants(eventId, participants)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
 }

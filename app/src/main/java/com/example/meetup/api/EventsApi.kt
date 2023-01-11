@@ -19,4 +19,10 @@ interface EventsApi {
         @Query("latitude") latitude: Double,
         @Query("longitude") longitude: Double
     ): List<Event>
+
+    @POST(HttpRoutes.ADD_PARTICIPANTS)
+    suspend fun addParticipants(
+        @Query("eventId") eventId: Int,
+        @Body participants: List<Int>
+    )
 }
