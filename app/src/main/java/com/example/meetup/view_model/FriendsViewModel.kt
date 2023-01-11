@@ -92,6 +92,6 @@ class FriendsViewModel @Inject constructor(
         // made because of lack of endpoint in api
         getFriendsList()
 
-        return fiendsList.firstOrNull { it.id.toInt() == searchedID }
+        return friendsList.firstOrNull { it.id.toInt() == searchedID }
     }
 }
