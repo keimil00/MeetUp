@@ -2,6 +2,7 @@ package com.example.meetup.screen
 
 import android.annotation.SuppressLint
 import android.media.Image
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,6 +36,7 @@ import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import com.example.meetup.event.dto.NewEventRequestBody
+import com.example.meetup.location.ClickedLocationStore
 import com.example.meetup.location.LocationStore
 import com.example.meetup.navigation.Screen
 import com.example.meetup.view_model.EventViewModel
@@ -326,6 +328,20 @@ fun NewMeeting(navController: NavController, eventViewModel: EventViewModel = hi
                                                 .background(pickedColor)
                                         )
                                     }
+                                    Log.i("fuszera poza", ClickedLocationStore.clickedLongitude.toString())
+
+                                    var latToCreate: Double
+                                    var lonToCreate: Double
+                                    if (ClickedLocationStore.wasClicked) {
+                                        latToCreate = ClickedLocationStore.clickedLatitude
+                                        lonToCreate = ClickedLocationStore.clickedLongitude
+                                        Log.i("fuszera wewnatrz", ClickedLocationStore.clickedLongitude.toString())
+
+                                    }
+                                    else {
+                                        latToCreate = LocationStore.storedLatitude
+                                        lonToCreate = LocationStore.storedLongitude
+                                    }
 //Cancel/Submit buttons
                                     Row(
                                         modifier = Modifier
@@ -344,12 +360,14 @@ fun NewMeeting(navController: NavController, eventViewModel: EventViewModel = hi
                                                 name = title,
                                                 date = pickedDate.atTime(pickedTime).toString(),
                                                 durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
-                                                latitude = LocationStore.storedLatitude,
-                                                longitude = LocationStore.storedLongitude,
+                                                latitude = latToCreate,
+                                                longitude = lonToCreate,
                                                 description = description,
                                                 color = pickedColorInt.toString()
                                             ))
                                             //TODO: add participants...
+                                            ClickedLocationStore.wasClicked = false
+
                                             navController.navigate(Screen.Home.route)
                                         })  {
                                             Text(text = "Submit")

@@ -10,6 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.NavController
 import com.example.meetup.location.MarkerManager
 import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
@@ -19,6 +20,8 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import com.example.meetup.view_model.EventViewModel
+import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 
 object MapConsts {
@@ -29,7 +32,7 @@ object MapConsts {
 
 
 @Composable
-fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel): MapView {
+fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel, navController: NavController): MapView {
     // Getting events
     LaunchedEffect(Unit, block = {
         eventViewModel.getEventsList(MapConsts.RYNEK_LAT, MapConsts.RYNEK_LON)      // TODO ?
@@ -99,6 +102,12 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel): MapView {
     // zooming by pinching
     mapView.setMultiTouchControls(true)
 
+    // mapController.animateTo(locationOverlay.myLocation)
+
+    // detecting pressing
+    val meReceiver = MeetupMapEventReceiver(navController)
+    val eventOverlay = MapEventsOverlay(meReceiver)
+    mapView.overlays.add(eventOverlay)
 
     return mapView
 }
