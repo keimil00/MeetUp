@@ -6,12 +6,9 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -23,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -126,7 +124,10 @@ fun Profile (navController: NavController, friendUsername: String?=null, friendF
 
 
 @Composable
-fun ProfileImage(id:String?=null){
+fun ProfileImage(id:String?=null, userViewModel: UserViewModel = hiltViewModel()){
+    LaunchedEffect(Unit, block = {
+        userViewModel.getCurrentUser()
+    })
     val imageUri = rememberSaveable{mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if(imageUri.value.isEmpty())
@@ -154,22 +155,30 @@ fun ProfileImage(id:String?=null){
         ){
             if(id != null){
                 val context = LocalContext.current
-                Image(
+                androidx.compose.material3.Icon(
                     painter = painterResource(id = context.resources.getIdentifier("images${id.toInt().mod(71)}", "drawable", context.packageName)),
-                    //tint = MaterialTheme.colorScheme.onBackground,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "Localized description",
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier.size(200.dp)//.background(color = Color.Black)
                 )
             }
             else {
+                val context = LocalContext.current
+                androidx.compose.material3.Icon(
+                    painter = painterResource(id = context.resources.getIdentifier("images${userViewModel.currentUser.id.mod(71)+2}", "drawable", context.packageName)),
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    contentDescription = "Localized description",
+                    modifier = Modifier.size(200.dp)//.background(color = Color.Black)
+                )
+                /*
                 Image(
                     painter = painter,
                     contentDescription = null,
                     modifier = Modifier
                         .wrapContentSize(align = Alignment.Center)
-                        .clickable { launcher.launch("image/*") },
+                        .clickable { launcher.launch("image\*") },
                     //contentScale = ContentScale.Crop
-                )
+                )*/
             }
         }
     }
