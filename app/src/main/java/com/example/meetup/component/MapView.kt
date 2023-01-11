@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.meetup.location.permission.PermissionAction
 import androidx.compose.runtime.*
+import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.view_model.EventViewModel
 
@@ -26,6 +27,7 @@ fun MapView(
     scaffoldState: ScaffoldState,
     permissionTestViewModel: PermissionTestViewModel,
     eventViewModel: EventViewModel,
+    navController: NavController,
     onLoad: ((map: MapView) -> Unit)? = null
 ) {
 
@@ -61,7 +63,7 @@ fun MapView(
 
     Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID   // TODO do on creation
 
-    val mapViewState = rememberMapViewWithLifecycle(eventViewModel)
+    val mapViewState = rememberMapViewWithLifecycle(eventViewModel, navController)
 
     AndroidView(
         { mapViewState },

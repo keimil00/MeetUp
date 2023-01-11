@@ -140,7 +140,8 @@ fun Home(
                     Modifier.padding(paddingValues),
                     rememberScaffoldState(),
                     PermissionTestViewModel(),
-                    eventViewModel
+                    eventViewModel,
+                    navController
                 )
 
             }
