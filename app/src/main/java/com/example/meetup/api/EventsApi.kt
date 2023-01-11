@@ -12,7 +12,7 @@ interface EventsApi {
     @POST(HttpRoutes.CREATE_EVENT)
     suspend fun createEvent(
         @Body request: NewEventRequestBody
-    )
+    ): Int
 
     @GET(HttpRoutes.GET_NEARBY_EVENTS)
     suspend fun getEvents(
