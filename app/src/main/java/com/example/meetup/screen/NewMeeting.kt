@@ -300,11 +300,6 @@ fun NewMeeting(navController: NavController, eventViewModel : EventViewModel = h
                                         )
                                     }
 //Cancel/Submit buttons
-/*
-LaunchedEffect(Unit, block = {
-        userViewModel.getCurrentUser()
-}
-)*/
                                     Row(
                                         modifier = Modifier
                                             .padding(16.dp)
@@ -327,7 +322,8 @@ LaunchedEffect(Unit, block = {
                                                 description = description,
                                                 color = pickedColor.toString()
                                             ))
-                                            //TODO: add participants... and getting long- and latitude
+                                            //TODO: add participants...
+                                            navController.navigate(Screen.Home.route)
                                         })  {
                                             Text(text = "Submit")
                                         }

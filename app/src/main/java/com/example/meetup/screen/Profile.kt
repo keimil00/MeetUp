@@ -34,19 +34,26 @@ import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.meetup.component.Drawer
 import com.example.meetup.R
+import com.example.meetup.model.Friend
 import com.example.meetup.navigation.Screen
 import com.example.meetup.view_model.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile (navController: NavController, userViewModel: UserViewModel = hiltViewModel()){//, user : User) {
+fun Profile (navController: NavController, friendUsername: String?, friendFirstName: String?, friendSurname: String?, userViewModel: UserViewModel = hiltViewModel()){//, user : User) {
     LaunchedEffect(Unit, block = {
         userViewModel.getCurrentUser()
     })
     Drawer(navController = navController, title = stringResource(id = R.string.profile)) {
-        var username = userViewModel.currentUser.username // var user by rememberSaveable{ mutableStateOf("") }
-        var firstName = userViewModel.currentUser.firstName // by rememberSaveable {mutableStateOf("")}
+        var username = userViewModel.currentUser.username
+        var firstName = userViewModel.currentUser.firstName
         var lastName = userViewModel.currentUser.lastName
+        if (friendUsername != null)
+        {
+            username = friendUsername
+            firstName = friendFirstName!!
+            lastName = friendSurname!!
+        }
 
         Text(text = "Profil")
         Box(modifier = Modifier.fillMaxSize())
