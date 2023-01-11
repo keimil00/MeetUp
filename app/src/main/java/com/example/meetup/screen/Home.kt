@@ -71,7 +71,7 @@ fun Home(
                 scaffoldState = bottomSheetScaffoldState,
                 sheetShape = RectangleShape,
                 sheetElevation = BottomSheetScaffoldDefaults.SheetElevation,
-                sheetBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                sheetBackgroundColor = MaterialTheme.colorScheme.background,
                 sheetContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 floatingActionButton = {
                     FloatingActionButton(

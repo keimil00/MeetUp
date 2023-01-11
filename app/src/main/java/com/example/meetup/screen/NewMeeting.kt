@@ -264,6 +264,7 @@ fun NewMeeting(navController: NavController, eventViewModel : EventViewModel = h
                                             .padding(16.dp)
                                             .fillMaxWidth()
                                             .clip(RoundedCornerShape(20.dp)),
+                                        dividersColor = Color.White
                                     )
 //Color picker
                                     val colorDialogState = rememberMaterialDialogState()

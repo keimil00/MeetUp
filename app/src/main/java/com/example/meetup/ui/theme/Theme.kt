@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-object backgroundImageColourPalette{
+object BackgroundImageColourPalette{
     val pink = Color(0xFFFF00FE)
     val black = Color(0xFF000000)
     val darkBlue = Color(0xFF286EAB )
@@ -36,7 +36,7 @@ private val DarkColorPalette = darkColorScheme(
     onError = Red20,
     errorContainer = Red30,
     onErrorContainer = Red90,
-    background = Grey10,
+    background = Grey20,
     onBackground = Grey90,
     surface = GreenGrey30,
     onSurface = GreenGrey80,
@@ -78,10 +78,10 @@ private val LightColorPalette = lightColorScheme(
 
 @Composable
 fun MeetUpTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+//    val useDynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = when {
-        useDynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        useDynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
+//        useDynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
+//        useDynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
         darkTheme -> DarkColorPalette
         else -> LightColorPalette
     }
