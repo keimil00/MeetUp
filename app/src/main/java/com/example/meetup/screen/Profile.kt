@@ -1,6 +1,7 @@
 package com.example.meetup.screen
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Icon
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,7 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,7 +43,7 @@ import com.example.meetup.view_model.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Profile (navController: NavController, friendUsername: String?, friendFirstName: String?, friendSurname: String?, userViewModel: UserViewModel = hiltViewModel()){//, user : User) {
+fun Profile (navController: NavController, friendUsername: String?=null, friendFirstName: String?=null, friendSurname: String?=null, friendIconId:String?=null, userViewModel: UserViewModel = hiltViewModel()){//, user : User) {
     LaunchedEffect(Unit, block = {
         userViewModel.getCurrentUser()
     })
@@ -55,7 +58,7 @@ fun Profile (navController: NavController, friendUsername: String?, friendFirstN
             lastName = friendSurname!!
         }
 
-        Text(text = "Profil")
+        Text(text = "Profile")
         Box(modifier = Modifier.fillMaxSize())
         {
             Card(
@@ -82,7 +85,7 @@ fun Profile (navController: NavController, friendUsername: String?, friendFirstN
                         .verticalScroll(rememberScrollState())
                         .padding(8.dp)
                 ) {
-                    ProfileImage()
+                    ProfileImage(friendIconId)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -124,7 +127,7 @@ fun Profile (navController: NavController, friendUsername: String?, friendFirstN
 
 
 @Composable
-fun ProfileImage(){
+fun ProfileImage(id:String?=null){
     val imageUri = rememberSaveable{mutableStateOf("") }
     val painter = rememberAsyncImagePainter(
         if(imageUri.value.isEmpty())
@@ -150,15 +153,25 @@ fun ProfileImage(){
                 .padding(8.dp)
                 .size(200.dp)
         ){
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .wrapContentSize(align = Alignment.Center)
-                    .clickable { launcher.launch("image/*") },
-                //contentScale = ContentScale.Crop
-            )
-
+            if(id != null){
+                val context = LocalContext.current
+                Image(
+                    painter = painterResource(id = context.resources.getIdentifier("images${id.toInt().mod(71)}", "drawable", context.packageName)),
+                    //tint = MaterialTheme.colorScheme.onBackground,
+                    contentDescription = "Localized description",
+                    modifier = Modifier.size(200.dp)
+                )
+            }
+            else {
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .wrapContentSize(align = Alignment.Center)
+                        .clickable { launcher.launch("image/*") },
+                    //contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 }

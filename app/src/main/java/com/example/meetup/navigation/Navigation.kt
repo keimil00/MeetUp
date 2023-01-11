@@ -37,7 +37,7 @@ fun Navigation() {
         composable(route = Screen.Home.route) {
             Home(navController = navController)
         }
-        composable(route = Screen.Profile.route,
+        composable(route = Screen.Profile.route,// + "/{friendUsername}/{friendFirstName}/{friendSurname}",
             arguments = listOf(
                 navArgument("friendUsername"){
                     type = NavType.StringType
@@ -50,16 +50,50 @@ fun Navigation() {
                 navArgument("friendSurname"){
                     type = NavType.StringType
                     nullable = true
+                },
+                navArgument("friendIconId"){
+                    type = NavType.StringType
+                    nullable = true
                 }
             )
             ){
                 navBackStackEntry ->
             val args = navBackStackEntry.arguments
-            val friendUsername = args?.getString("eventId")
-            val friendFirstname = args?.getString("friendFirstName")
+            val friendUsername = args?.getString("friendUsername")
+            val friendFirstName = args?.getString("friendFirstName")
             val friendSurname = args?.getString("friendSurname")
+            val friendIconId = args?.getString("friendIconId")
 
-            Profile(navController = navController, friendUsername, friendFirstname, friendSurname)
+            Profile(navController = navController, friendUsername, friendFirstName, friendSurname, friendIconId)
+        }
+        composable(route = Screen.FriendProfile.route,
+            arguments = listOf(
+                navArgument("friendUsername"){
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("friendFirstName"){
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("friendSurname"){
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("friendIconId"){
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
+        ){
+                navBackStackEntry ->
+            val args = navBackStackEntry.arguments
+            val friendUsername = args?.getString("friendUsername")
+            val friendFirstName = args?.getString("friendFirstName")
+            val friendSurname = args?.getString("friendSurname")
+            val friendIconId = args?.getString("friendIconId")
+
+            Profile(navController = navController, friendUsername, friendFirstName, friendSurname, friendIconId)
         }
         composable(route = Screen.Friends.route){
             Friends(navController = navController)
