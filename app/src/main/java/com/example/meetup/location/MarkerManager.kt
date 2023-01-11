@@ -17,6 +17,9 @@ class MarkerManager {
     companion object {
         private fun prepareDrawable(context: Context, colorString: String): Drawable? {
             val image = ContextCompat.getDrawable(context, R.drawable.custom_marker40)
+                ?.getConstantState()
+                ?.newDrawable()?.mutate();
+
 
             val colorARGB: Int = ColorPalette.Primary.get(colorString.toInt()).toArgb()
 

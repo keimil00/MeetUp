@@ -93,7 +93,7 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel, navController: 
         )
         mapView.overlays.add(createdMarker)
     }
-
+    var e = mapView.overlays
     // rotation gestures
 //    val rotationGestureOverlay = RotationGestureOverlay(mapView)
 //    rotationGestureOverlay.isEnabled
