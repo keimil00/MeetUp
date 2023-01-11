@@ -6,10 +6,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.core.content.res.ResourcesCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.example.meetup.location.LocationStore
 import com.example.meetup.location.MarkerManager
 import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
@@ -19,18 +19,20 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import com.example.meetup.view_model.EventViewModel
+import org.osmdroid.views.overlay.Marker
 
-object RynekCoords {
+object MapConsts {
     const val RYNEK_LAT = 51.110150
     const val RYNEK_LON = 17.031780
+    const val DEFAULT_ZOOM = 10.5
 }
 
 
 @Composable
-fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel = hiltViewModel()): MapView {
+fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel): MapView {
     // Getting events
     LaunchedEffect(Unit, block = {
-        eventViewModel.getEventsList(RynekCoords.RYNEK_LAT, RynekCoords.RYNEK_LON)      // TODO ?
+        eventViewModel.getEventsList(MapConsts.RYNEK_LAT, MapConsts.RYNEK_LON)      // TODO ?
     })
 
     val context = LocalContext.current
@@ -61,30 +63,42 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel = hiltViewModel(
 
     // if no location, default starting place in Wroclaw
     val mapController: IMapController = mapView.controller
-    mapController.setZoom(10.5)
-    val startPoint = GeoPoint(LocationStore.storedLatitude, LocationStore.storedLongitude)
+    mapController.setZoom(MapConsts.DEFAULT_ZOOM)
+    // val startPoint = GeoPoint(LocationStore.storedLatitude, LocationStore.storedLongitude)
+    val startPoint = GeoPoint(MapConsts.RYNEK_LAT, MapConsts.RYNEK_LON)
     mapController.setCenter(startPoint)
 
     // one example marker
 //    val marker1 = Marker(mapView)
-//    marker1.position = GeoPoint(RynekCoords.RYNEK_LAT, RynekCoords.RYNEK_LON)
+//    marker1.position = GeoPoint(MapConsts.RYNEK_LAT, MapConsts.RYNEK_LON)
 //    marker1.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-//    //marker.setIcon(context.resources.getDrawable(R.drawable.ic_gps_location))
+//    marker1.setIcon(ResourcesCompat.getDrawable(drawable.ic_gps_location))
 //    marker1.setInfoWindow(null)
 //    mapView.overlays.add(marker1)
 
 
     // overlay markers from api
     for (event in eventViewModel.eventsList) {
-        val createdMarker = MarkerManager.createMarker(mapView, event.latitude, event.longitude, event.name, event.description)
+        val createdMarker = MarkerManager.createMarker(
+            mapView,
+            event.latitude,
+            event.longitude,
+            event.name,
+            event.description,
+            event.color,
+            LocalContext.current
+        )
         mapView.overlays.add(createdMarker)
     }
 
-    // rotation gestures and zooming
-    val rotationGestureOverlay = RotationGestureOverlay(mapView)
-    rotationGestureOverlay.isEnabled
+    // rotation gestures
+//    val rotationGestureOverlay = RotationGestureOverlay(mapView)
+//    rotationGestureOverlay.isEnabled
+//    mapView.overlays.add(rotationGestureOverlay)
+
+    // zooming by pinching
     mapView.setMultiTouchControls(true)
-    mapView.overlays.add(rotationGestureOverlay)
+
 
     return mapView
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.meetup.UiText
 import com.example.meetup.api.EventsApi
 import com.example.meetup.event.dto.NewEventRequestBody
+import com.example.meetup.location.LocationStore
 import com.example.meetup.model.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventViewModel @Inject constructor(
     private val api: EventsApi
-): ViewModel() {
+) : ViewModel() {
     private val _eventsList = mutableStateListOf<Event>()
     val eventsList: SnapshotStateList<Event>
         get() = _eventsList
@@ -44,14 +45,19 @@ class EventViewModel @Inject constructor(
     fun createEvent(request : NewEventRequestBody, participants: List<Int>) {
         viewModelScope.launch {
             try {
-                val result = api.createEvent( request )
+                val result = api.createEvent(request)
+                add_participants(result, participants)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    // TODO add creating event
+    fun getEventById(searchedID: Int?): Event? {
+        // made because of lack of endpoint in api
+        getEventsList(LocationStore.storedLatitude, LocationStore.storedLongitude)
+        return eventsList.firstOrNull { it.id == searchedID }
+    }
 
     fun add_participants(eventId: Int, participants: List<Int>) {
         viewModelScope.launch {
@@ -63,5 +69,4 @@ class EventViewModel @Inject constructor(
             }
         }
     }
-
 }

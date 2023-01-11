@@ -114,7 +114,7 @@ private fun BottomButtons(dialogState: MutableState<Boolean>, email: MutableStat
             },
             modifier = Modifier
                 .padding(10.dp)
-                .width(110.dp),
+                .width(140.dp),
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -129,7 +129,7 @@ private fun BottomButtons(dialogState: MutableState<Boolean>, email: MutableStat
             },
             modifier = Modifier
                 .padding(10.dp)
-                .width(110.dp),
+                .width(130.dp),
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,

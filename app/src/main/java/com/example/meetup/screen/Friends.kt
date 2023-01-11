@@ -122,8 +122,8 @@ fun FriendListItem(navController: NavController, friend: Friend){
             },
             modifier = Modifier.clickable {
                 navController.navigate(
-                    // TODO What can we show about another user? Nothing for now
-                    Screen.Profile.route//(user)
+                    route = Screen.Profile.route+"/"+friend.emailAddress+"/"+friend.firstName+"/"+friend.surname+"/"+friend.id
+
                 ) }
         )
         Divider()

@@ -18,12 +18,14 @@ import androidx.compose.runtime.getValue
 import com.example.meetup.location.permission.PermissionAction
 import androidx.compose.runtime.*
 import com.example.meetup.R
+import com.example.meetup.view_model.EventViewModel
 
 @Composable
 fun MapView(
     modifier: Modifier = Modifier,
     scaffoldState: ScaffoldState,
     permissionTestViewModel: PermissionTestViewModel,
+    eventViewModel: EventViewModel,
     onLoad: ((map: MapView) -> Unit)? = null
 ) {
 
@@ -59,7 +61,7 @@ fun MapView(
 
     Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID   // TODO do on creation
 
-    val mapViewState = rememberMapViewWithLifecycle()
+    val mapViewState = rememberMapViewWithLifecycle(eventViewModel)
 
     AndroidView(
         { mapViewState },

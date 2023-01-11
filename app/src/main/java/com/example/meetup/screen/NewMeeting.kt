@@ -43,7 +43,9 @@ import com.github.skydoves.colorpicker.compose.*
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.color.ColorPalette
 import com.vanpra.composematerialdialogs.color.colorChooser
+import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.TimePickerDefaults
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import io.ktor.server.application.*
@@ -56,8 +58,9 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewMeeting(navController: NavController,
-               eventViewModel : EventViewModel = hiltViewModel(),
+               eventViewModel: EventViewModel = hiltViewModel(),
                participantsViewModel: ParticipantsViewModel = hiltViewModel()) {
+    LocationStore.refreshLocation(LocalContext.current)
     Drawer(
         navController = navController,
         title = stringResource(id = R.string.new_meeting),
@@ -66,7 +69,7 @@ fun NewMeeting(navController: NavController,
             //var participants...
             //var latitude : Double
             //var longitude : Double
-            var pickedDate by remember{ mutableStateOf(LocalDate.now()) }
+            var pickedDate by remember { mutableStateOf(LocalDate.now()) }
             var pickedTime by remember { mutableStateOf(LocalTime.now()) }
             var description by remember { mutableStateOf("") }
             var pickedDurationTime by remember { mutableStateOf<Hours>(FullHours(0, 30)) }
@@ -191,13 +194,22 @@ fun NewMeeting(navController: NavController,
                             MaterialDialog(
                                 dialogState = dateDialogState,
                                 buttons = {
-                                    positiveButton(text = "ok")
+                                    positiveButton(text = "ok") // TODO remove weird purple color
                                     negativeButton(text = "Cancel")
                                 }
                             ) {
                                 datepicker(
                                     initialDate = LocalDate.now(),
-                                    title = "Pick a date"
+                                    title = "Pick a date",
+                                            colors = DatePickerDefaults.colors(
+                                                headerBackgroundColor = MaterialTheme.colorScheme.primary,
+                                                //headerTextColor: Color,
+                                                //calendarHeaderTextColor: Color,
+                                                dateActiveBackgroundColor = MaterialTheme.colorScheme.primary,
+                                                //dateInactiveBackgroundColor: Color,
+                                                //dateActiveTextColor: Color,
+                                                //dateInactiveTextColor: Color
+                                            ),
                                 ) {
                                     pickedDate = it;
                                 }
@@ -205,13 +217,25 @@ fun NewMeeting(navController: NavController,
                             MaterialDialog(
                                 dialogState = timeDialogState,
                                 buttons = {
-                                    positiveButton(text = "ok")
+                                    positiveButton(text = "ok")// TODO remove weird purple color
                                     negativeButton(text = "Cancel")
-                                }
+                                },
+                                        backgroundColor = MaterialTheme.colorScheme.background,
                             ) {
                                 timepicker(
                                     initialTime = LocalTime.NOON,
-                                    title = "Pick a date"
+                                    title = "Pick time",
+                                            colors = TimePickerDefaults.colors(
+                                                activeBackgroundColor = MaterialTheme.colorScheme.primary,
+                                                //inactiveBackgroundColor: Color,
+                                                activeTextColor = Color.White,
+                                                inactiveTextColor = MaterialTheme.colorScheme.onBackground,
+                                                //inactivePeriodBackground: Color,
+                                                selectorColor = MaterialTheme.colorScheme.primary,
+                                                selectorTextColor = Color.White,
+                                                headerTextColor = Color.White,
+                                                borderColor = Color.White
+                                            ),
                                 ) {
                                     pickedTime = it;
                                 }
@@ -270,7 +294,8 @@ fun NewMeeting(navController: NavController,
                                     .padding(16.dp)
                                     .fillMaxWidth()
                                     .clip(RoundedCornerShape(20.dp)),
-                            )
+                            dividersColor = Color.White
+                                    )
 //Color picker
                             val colorDialogState = rememberMaterialDialogState()
 
@@ -306,11 +331,7 @@ fun NewMeeting(navController: NavController,
                                 )
                             }
 //Cancel/Submit buttons
-/*
-LaunchedEffect(Unit, block = {
-        userViewModel.getCurrentUser()
-}
-)*/
+
                             Row(
                                 modifier = Modifier
                                     .padding(16.dp)
@@ -331,12 +352,12 @@ LaunchedEffect(Unit, block = {
                                             latitude = LocationStore.storedLatitude,
                                             longitude = LocationStore.storedLongitude,
                                             description = description,
-                                            color = pickedColor.toString()
+                                            color = pickedColorInt.toString()
                                         ),
                                         participantsViewModel.participantsList.map { it.friend.id.toInt() }
                                     )
                                     participantsViewModel.clearParticipantsList(); // ? maybe it will be unnecesary
-                                    //TODO: add participants... and getting long- and latitude
+                                    //TODO: add participants... navController.navigate(Screen.Home.route)
                                 }) {
                                     Text(text = "Submit")
                                 }
@@ -351,8 +372,13 @@ LaunchedEffect(Unit, block = {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewMeetingListItem(navController: NavController, text: String, image: Image? = null, onClick: () -> Unit){
-    val imageUri = rememberSaveable{mutableStateOf("") }
+fun NewMeetingListItem(
+    navController: NavController,
+    text: String,
+    image: Image? = null,
+    onClick: () -> Unit
+) {
+    val imageUri = rememberSaveable { mutableStateOf("") }
     Card(
         modifier = Modifier
             .padding(16.dp)
