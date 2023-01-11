@@ -24,7 +24,10 @@ import com.example.meetup.model.Event
 import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.FriendsViewModel
 import com.example.meetup.view_model.UserViewModel
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun EventDetails(
     navController: NavController,
@@ -41,15 +44,33 @@ fun EventDetails(
     var ownerFirstName: String
     var ownerSurname: String
     var ownerId = displayedEvent?.ownerId
+    var selfCreated: Boolean
 
     // Check if event was created by this user, or his friend
     if (displayedEvent?.ownerId == userViewModel.currentUser.id) {
         ownerFirstName = userViewModel.currentUser.firstName
         ownerSurname = userViewModel.currentUser.lastName
+        selfCreated = true
     }
     else {
         ownerFirstName = friendsViewModel.getFriendById(displayedEvent?.ownerId)?.firstName ?: ""
         ownerSurname = friendsViewModel.getFriendById(displayedEvent?.ownerId)?.firstName ?: ""
+        selfCreated = false
+    }
+    var formattedDuration: String
+    if (displayedEvent?.durationInSeconds != null) {
+        formattedDuration = String.format(
+            "This event will last for %02d:%02d",
+            displayedEvent?.durationInSeconds / 3600,
+            (displayedEvent?.durationInSeconds % 3600) / 60,
+        )
+    }
+    else {
+        formattedDuration = String.format(
+            "This event will last for %02d:%02d",
+            0,
+            30,
+        )
     }
 
     Drawer(navController = navController, title = stringResource(id = R.string.event_details)) {
@@ -112,18 +133,53 @@ fun EventDetails(
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        if (selfCreated) {
+                            Text(
+                                text = "You created this event",
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                        else {
+                            Text(
+                                text = "${ownerFirstName} ${ownerSurname} invited you",
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.size(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 4.dp, end = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
-                            text = "${ownerFirstName} ${ownerSurname} invited you",
+                            text = displayedEvent?.date ?: "",
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
-                    Spacer(modifier = Modifier.size(10.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 4.dp, end = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = formattedDuration,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
                 }
             }
         }
     }
 }
+
 //                    Button(
 //                        onClick = {
 //                            // TODO go to map and locate this marker
