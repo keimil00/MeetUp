@@ -19,6 +19,8 @@ import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import com.example.meetup.view_model.EventViewModel
+import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 
 object MapConsts {
@@ -99,6 +101,11 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel): MapView {
     // zooming by pinching
     mapView.setMultiTouchControls(true)
 
+    // mapController.animateTo(locationOverlay.myLocation)
+
+    // detecting pressing
+    val meReceiver = MeetupMapEventReceiver()
+    val eventOverlay = MapEventsOverlay(meReceiver)
 
     return mapView
 }
