@@ -159,9 +159,16 @@ fun EventCard(event: Event, navController: NavController) {
                 modifier = Modifier.padding(10.dp),
                 textAlign = TextAlign.Left,
             )
+//            Text(
+//                text = event.description,
+//                style = MaterialTheme.typography.bodyMedium,
+//                modifier = Modifier.padding(10.dp),
+//                textAlign = TextAlign.Left,
+//            )
             Text(
-                text = event.description,
-                style = MaterialTheme.typography.bodyMedium,
+                text = event.date,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(10.dp),
                 textAlign = TextAlign.Left,
             )
