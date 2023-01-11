@@ -30,8 +30,13 @@ fun AddParticipantsDialog(
     LaunchedEffect(friendsViewModel, context) {
         friendsViewModel.getFriendsList()
     }
-    if(participantsViewModel.participantsList.isEmpty()) {
-        participantsViewModel.setParticipantsList(friendsViewModel.friendsList.map { FriendSelect(it, false) })
+    if (participantsViewModel.participantsList.isEmpty()) {
+        participantsViewModel.setParticipantsList(friendsViewModel.friendsList.map {
+            FriendSelect(
+                it,
+                false
+            )
+        })
     }
     Card(
         modifier = Modifier
@@ -58,7 +63,8 @@ private fun AddBody(participantsViewModel: ParticipantsViewModel) {
     LazyColumn(
         Modifier
             .fillMaxWidth()
-            .height(425.dp)) {
+            .height(425.dp)
+    ) {
         items(participantsViewModel.participantsList) {
             FriendSelectItem(friendSelect = it, participantsViewModel = participantsViewModel)
         }
@@ -78,7 +84,9 @@ fun FriendSelectItem(friendSelect: FriendSelect, participantsViewModel: Particip
                 painter = painterResource(
                     id = context.resources.getIdentifier(
                         "images${friendSelect.friend.id.toInt().mod(71)}",
-                        "drawable", context.packageName)),
+                        "drawable", context.packageName
+                    )
+                ),
                 tint = MaterialTheme.colorScheme.onBackground,
                 contentDescription = "Localized description",
                 modifier = Modifier.size(30.dp)
@@ -87,7 +95,12 @@ fun FriendSelectItem(friendSelect: FriendSelect, participantsViewModel: Particip
         trailingContent = {
             Checkbox(
                 checked = friendSelect.isSelected,
-                onCheckedChange = { participantsViewModel.setParticipantSelected(friendSelect, it) },
+                onCheckedChange = {
+                    participantsViewModel.setParticipantSelected(
+                        friendSelect,
+                        it
+                    )
+                },
                 colors = CheckboxDefaults.colors(
                     checkedColor = MaterialTheme.colorScheme.primary,
                     uncheckedColor = MaterialTheme.colorScheme.onBackground,
@@ -111,7 +124,7 @@ private fun BottomButtons(dialogState: MutableState<Boolean>) {
             .fillMaxWidth()
             .padding(20.dp),
         horizontalArrangement = Arrangement.Center
-    ){
+    ) {
         Button(
             onClick = {
                 dialogState.value = false

@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.meetup.view_model.MainViewModel
 import com.example.meetup.R
 import com.example.meetup.authorization.AuthResult
 import com.example.meetup.event.AuthUiEvent
 import com.example.meetup.navigation.Screen
+import com.example.meetup.view_model.MainViewModel
 
 const val BUTTON_HEIGHT = 60
 const val BUTTON_HORIZONTAL_PADDING = 30
@@ -32,16 +32,14 @@ const val BUTTON_FONT_SIZE = 20
 const val TEXT_FONT_SIZE = 20
 
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login (navController: NavController, viewModel: MainViewModel = hiltViewModel())
-{
+fun Login(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
     val context = LocalContext.current
     LaunchedEffect(viewModel, context) {
         viewModel.authResults.collect { result ->
-            when(result) {
+            when (result) {
                 is AuthResult.Authorized -> {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Login.route) {
@@ -93,7 +91,12 @@ fun Login (navController: NavController, viewModel: MainViewModel = hiltViewMode
                 TextField(
                     value = viewModel.state.email,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.EmailChanged(it)) },
-                    label = { Text(text = stringResource(id = R.string.username), fontSize = TEXT_FONT_SIZE.sp) },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.username),
+                            fontSize = TEXT_FONT_SIZE.sp
+                        )
+                    },
                     singleLine = true,
                     placeholder = {
                         Text(
@@ -113,7 +116,12 @@ fun Login (navController: NavController, viewModel: MainViewModel = hiltViewMode
                 TextField(
                     value = viewModel.state.password,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.PasswordChanged(it)) },
-                    label = { Text(text = stringResource(id = R.string.password), fontSize = TEXT_FONT_SIZE.sp) },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.password),
+                            fontSize = TEXT_FONT_SIZE.sp
+                        )
+                    },
                     singleLine = true,
                     placeholder = {
                         Text(
@@ -144,7 +152,10 @@ fun Login (navController: NavController, viewModel: MainViewModel = hiltViewMode
                         .fillMaxWidth()
                         .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.sign_in), fontSize = BUTTON_FONT_SIZE.sp)
+                    Text(
+                        text = stringResource(id = R.string.sign_in),
+                        fontSize = BUTTON_FONT_SIZE.sp
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -156,8 +167,8 @@ fun Login (navController: NavController, viewModel: MainViewModel = hiltViewMode
                 }
                 Button(
                     onClick = {
-                        navController.navigate(Screen.Register.route){
-                            popUpTo(Screen.Login.route){
+                        navController.navigate(Screen.Register.route) {
+                            popUpTo(Screen.Login.route) {
                                 inclusive = true
                             }
                         }
@@ -174,7 +185,10 @@ fun Login (navController: NavController, viewModel: MainViewModel = hiltViewMode
                         .fillMaxWidth()
                         .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.sign_up), fontSize = BUTTON_FONT_SIZE.sp)
+                    Text(
+                        text = stringResource(id = R.string.sign_up),
+                        fontSize = BUTTON_FONT_SIZE.sp
+                    )
                 }
             }
         }

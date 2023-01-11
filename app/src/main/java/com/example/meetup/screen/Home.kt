@@ -64,8 +64,8 @@ fun Home(
             )
 
             BottomSheetScaffold(
-            scaffoldState = bottomSheetScaffoldState,
-            sheetShape = RectangleShape,
+                scaffoldState = bottomSheetScaffoldState,
+                sheetShape = RectangleShape,
                 sheetElevation = BottomSheetScaffoldDefaults.SheetElevation,
                 sheetBackgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                 sheetContentColor = MaterialTheme.colorScheme.onSurfaceVariant,

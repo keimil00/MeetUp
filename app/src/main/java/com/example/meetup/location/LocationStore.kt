@@ -22,8 +22,7 @@ object LocationStore {
             if (it != null) {
                 storedLatitude = it.latitude
                 storedLongitude = it.longitude
-            }
-            else {
+            } else {
                 Toast.makeText(passsedContext, "Location null", Toast.LENGTH_SHORT).show()
             }
         }

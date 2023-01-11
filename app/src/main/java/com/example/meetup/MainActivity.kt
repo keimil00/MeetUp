@@ -7,7 +7,7 @@ import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.meetup.navigation.Navigation
@@ -21,17 +21,22 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             setOnExitAnimationListener { splashScreenView ->
-            // Create your custom animation.
-            val slideUp = ObjectAnimator.ofFloat(splashScreenView.view, View.TRANSLATION_Y, 0f, -splashScreenView.view.height.toFloat())
-            slideUp.interpolator = AnticipateInterpolator()
-            slideUp.duration = 500L
+                // Create your custom animation.
+                val slideUp = ObjectAnimator.ofFloat(
+                    splashScreenView.view,
+                    View.TRANSLATION_Y,
+                    0f,
+                    -splashScreenView.view.height.toFloat()
+                )
+                slideUp.interpolator = AnticipateInterpolator()
+                slideUp.duration = 500L
 
-            // Call SplashScreenView.remove at the end of your custom animation.
-            slideUp.doOnEnd { splashScreenView.remove() }
+                // Call SplashScreenView.remove at the end of your custom animation.
+                slideUp.doOnEnd { splashScreenView.remove() }
 
-            // Run your animation.
-            slideUp.start()
-        }
+                // Run your animation.
+                slideUp.start()
+            }
             // TODO wait for authorization result )
             //setKeepOnScreenCondition()
 

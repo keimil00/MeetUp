@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.meetup.api.AuthApi
-import com.example.meetup.api.FriendsApi
 import com.example.meetup.api.EventsApi
+import com.example.meetup.api.FriendsApi
 import com.example.meetup.authorization.*
 import com.example.meetup.user_api.UserApi
 import dagger.Module

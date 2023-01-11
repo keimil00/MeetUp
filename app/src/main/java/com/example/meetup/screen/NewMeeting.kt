@@ -60,14 +60,16 @@ import java.time.format.DateTimeFormatter
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewMeeting(navController: NavController,
-               eventViewModel: EventViewModel = hiltViewModel(),
-               participantsViewModel: ParticipantsViewModel = hiltViewModel()) {
+fun NewMeeting(
+    navController: NavController,
+    eventViewModel: EventViewModel = hiltViewModel(),
+    participantsViewModel: ParticipantsViewModel = hiltViewModel()
+) {
     LocationStore.refreshLocation(LocalContext.current)
     Drawer(
         navController = navController,
         title = stringResource(id = R.string.new_meeting),
-        content = { paddingValues ->
+        content = { _ ->
             var title by remember { mutableStateOf("") }
             //var participants...
             //var latitude : Double
@@ -78,7 +80,8 @@ fun NewMeeting(navController: NavController,
             var pickedDurationTime by remember { mutableStateOf<Hours>(FullHours(0, 30)) }
             var pickedColor by remember { mutableStateOf(Color(0xFFF44336)) }
 
-            val participantsDialogState: MutableState<Boolean> = rememberSaveable { mutableStateOf(false) }
+            val participantsDialogState: MutableState<Boolean> =
+                rememberSaveable { mutableStateOf(false) }
             if (participantsDialogState.value) {
                 Dialog(
                     onDismissRequest = {
@@ -150,7 +153,6 @@ fun NewMeeting(navController: NavController,
                                     )
 //Participants
                                     NewMeetingListItem(
-                                        navController = navController,
                                         text = "Participants...",
                                         onClick = {
                                             participantsDialogState.value = true
@@ -227,7 +229,7 @@ fun NewMeeting(navController: NavController,
                                                 //dateInactiveTextColor: Color
                                             ),
                                         ) {
-                                            pickedDate = it;
+                                            pickedDate = it
                                         }
                                     }
                                     MaterialDialog(
@@ -253,7 +255,7 @@ fun NewMeeting(navController: NavController,
                                                 borderColor = Color.White
                                             ),
                                         ) {
-                                            pickedTime = it;
+                                            pickedTime = it
                                         }
                                     }
 
@@ -346,17 +348,22 @@ fun NewMeeting(navController: NavController,
                                                 .background(pickedColor)
                                         )
                                     }
-                                    Log.i("fuszera poza", ClickedLocationStore.clickedLongitude.toString())
+                                    Log.i(
+                                        "fuszera poza",
+                                        ClickedLocationStore.clickedLongitude.toString()
+                                    )
 
-                                    var latToCreate: Double
-                                    var lonToCreate: Double
+                                    val latToCreate: Double
+                                    val lonToCreate: Double
                                     if (ClickedLocationStore.wasClicked) {
                                         latToCreate = ClickedLocationStore.clickedLatitude
                                         lonToCreate = ClickedLocationStore.clickedLongitude
-                                        Log.i("fuszera wewnatrz", ClickedLocationStore.clickedLongitude.toString())
+                                        Log.i(
+                                            "fuszera wewnatrz",
+                                            ClickedLocationStore.clickedLongitude.toString()
+                                        )
 
-                                    }
-                                    else {
+                                    } else {
                                         latToCreate = LocationStore.storedLatitude
                                         lonToCreate = LocationStore.storedLongitude
                                     }
@@ -375,20 +382,21 @@ fun NewMeeting(navController: NavController,
                                         }
                                         Button(onClick = {
                                             eventViewModel.createEvent(
-                                             NewEventRequestBody(
-                                                name = title,
-                                                date = pickedDate.atTime(pickedTime).toString(),
-                                                durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
-                                                latitude = latToCreate,
-                                                longitude = lonToCreate,
-                                                description = description,
-                                                color = pickedColorInt.toString()
-                                            ),
-                                            participantsViewModel.participantsList.filter { it.isSelected }.map { it.friend.id.toInt() }
+                                                NewEventRequestBody(
+                                                    name = title,
+                                                    date = pickedDate.atTime(pickedTime).toString(),
+                                                    durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
+                                                    latitude = latToCreate,
+                                                    longitude = lonToCreate,
+                                                    description = description,
+                                                    color = pickedColorInt.toString()
+                                                ),
+                                                participantsViewModel.participantsList.filter { it.isSelected }
+                                                    .map { it.friend.id.toInt() }
                                             )
                                             ClickedLocationStore.wasClicked = false
 
-                                            participantsViewModel.clearParticipantsList(); // ? maybe it will be unnecesary
+                                            participantsViewModel.clearParticipantsList() // ? maybe it will be unnecesary
                                             navController.navigate(Screen.Home.route)
 
                                         }) {
@@ -408,7 +416,6 @@ fun NewMeeting(navController: NavController,
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewMeetingListItem(
-    navController: NavController,
     text: String,
     image: Image? = null,
     onClick: () -> Unit

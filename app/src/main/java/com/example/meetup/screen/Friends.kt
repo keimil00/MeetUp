@@ -12,7 +12,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,7 +34,7 @@ import com.example.meetup.view_model.FriendsViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = hiltViewModel()) {
+fun Friends(navController: NavController, friendsViewModel: FriendsViewModel = hiltViewModel()) {
     LaunchedEffect(Unit, block = {
         friendsViewModel.getFriendsList()
     })
@@ -65,10 +64,11 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
                 modifier = Modifier
                     .padding(paddingValues = it)
                     .fillMaxSize()
-            ){
-                val notification = rememberSaveable{ mutableStateOf("") }
-                if (notification.value.isNotEmpty()){
-                    Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
+            ) {
+                val notification = rememberSaveable { mutableStateOf("") }
+                if (notification.value.isNotEmpty()) {
+                    Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG)
+                        .show()
                     notification.value = ""
                 }
                 FloatingActionButton(
@@ -86,12 +86,13 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
                         )
                     }
                 )
-                Column(modifier = Modifier
-                    .padding(8.dp)
-                ){
-                    LazyColumn(modifier = Modifier.fillMaxWidth()){
-                        items(friendsViewModel.friendsList) {
-                            friend -> FriendListItem(navController = navController, friend = friend)
+                Column(
+                    modifier = Modifier
+                        .padding(8.dp)
+                ) {
+                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                        items(friendsViewModel.friendsList) { friend ->
+                            FriendListItem(navController = navController, friend = friend)
                         }
                     }
                 }
@@ -103,7 +104,7 @@ fun Friends (navController: NavController, friendsViewModel: FriendsViewModel = 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FriendListItem(navController: NavController, friend: Friend){
+fun FriendListItem(navController: NavController, friend: Friend) {
     val context = LocalContext.current
     Column {
         ListItem(
@@ -113,8 +114,10 @@ fun FriendListItem(navController: NavController, friend: Friend){
                 Icon(
                     painter = painterResource(
                         id = context.resources.getIdentifier(
-                                "images${friend.id.toInt().mod(71)}",
-                                "drawable", context.packageName)),
+                            "images${friend.id.toInt().mod(71)}",
+                            "drawable", context.packageName
+                        )
+                    ),
                     tint = MaterialTheme.colorScheme.onBackground,
                     contentDescription = "Localized description",
                     modifier = Modifier.size(30.dp)
@@ -122,9 +125,10 @@ fun FriendListItem(navController: NavController, friend: Friend){
             },
             modifier = Modifier.clickable {
                 navController.navigate(
-                    route = Screen.Profile.route+"/"+friend.emailAddress+"/"+friend.firstName+"/"+friend.surname+"/"+friend.id
+                    route = Screen.Profile.route + "/" + friend.emailAddress + "/" + friend.firstName + "/" + friend.surname + "/" + friend.id
 
-                ) }
+                )
+            }
         )
         Divider()
     }

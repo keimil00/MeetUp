@@ -1,4 +1,4 @@
-package com.madhu.locationpermission.permission
+package com.example.meetup.location.permission
 
 import android.content.Context
 import android.util.Log
@@ -10,8 +10,6 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import com.example.meetup.location.permission.PermissionAction
-import com.example.meetup.location.permission.Common
 
 
 private const val TAG = "PermissionUI"
@@ -78,7 +76,10 @@ fun PermissionUI(
                     permissionAction(PermissionAction.OnPermissionDenied)
                 }
                 SnackbarResult.ActionPerformed -> {
-                    Log.d(TAG, "User granted permission for $permission rationale. Launching permission request..")
+                    Log.d(
+                        TAG,
+                        "User granted permission for $permission rationale. Launching permission request.."
+                    )
                     launcher.launch(permission)
                 }
             }

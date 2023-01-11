@@ -42,11 +42,11 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun createEvent(request : NewEventRequestBody, participants: List<Int>) {
+    fun createEvent(request: NewEventRequestBody, participants: List<Int>) {
         viewModelScope.launch {
             try {
                 val result = api.createEvent(request)
-                add_participants(result, participants)
+                addParticipants(result, participants)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -59,11 +59,10 @@ class EventViewModel @Inject constructor(
         return eventsList.firstOrNull { it.id == searchedID }
     }
 
-    fun add_participants(eventId: Int, participants: List<Int>) {
+    private fun addParticipants(eventId: Int, participants: List<Int>) {
         viewModelScope.launch {
             try {
-                val result = api.addParticipants(eventId, participants)
-
+                api.addParticipants(eventId, participants)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

@@ -22,10 +22,13 @@ class LocationActivity : Activity() {
         val task = fusedLocationClient.lastLocation
 
         task.addOnSuccessListener {
-            if (it != null){
-                Toast.makeText(applicationContext, "Lat is: ${it.latitude}, Lon is: ${it.longitude}", Toast.LENGTH_SHORT).show()
-            }
-            else {
+            if (it != null) {
+                Toast.makeText(
+                    applicationContext,
+                    "Lat is: ${it.latitude}, Lon is: ${it.longitude}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 Toast.makeText(applicationContext, "Location null", Toast.LENGTH_SHORT).show()
             }
         }

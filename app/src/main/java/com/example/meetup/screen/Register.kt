@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.meetup.event.AuthUiEvent
-import com.example.meetup.view_model.MainViewModel
 import com.example.meetup.R
 import com.example.meetup.authorization.AuthResult
+import com.example.meetup.event.AuthUiEvent
 import com.example.meetup.navigation.Screen
+import com.example.meetup.view_model.MainViewModel
 
 const val REGISTRATION_TEXT_FONT_SIZE = 15
 
@@ -35,7 +35,7 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
 
     LaunchedEffect(viewModel, context) {
         viewModel.authResults.collect { result ->
-            when(result) {
+            when (result) {
                 is AuthResult.Authorized -> {
                     navController.navigate(Screen.Home.route) {
                         popUpTo(Screen.Register.route) {
@@ -82,18 +82,18 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                 TextField(
                     value = viewModel.state.firstName,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.FirstNameChanged(it)) },
-                    label = { Text(text = "Name", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    label = { Text(text = "Name", fontSize = REGISTRATION_TEXT_FONT_SIZE.sp) },
                     singleLine = true,
                     placeholder = {
                         Text(
                             text = "Enter your name",
-                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                            fontSize = REGISTRATION_TEXT_FONT_SIZE.sp
                         )
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
-                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                    textStyle = TextStyle(fontSize = REGISTRATION_TEXT_FONT_SIZE.sp),
                 )
             }
             Column(
@@ -102,18 +102,18 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                 TextField(
                     value = viewModel.state.lastName,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.LastNameChanged(it)) },
-                    label = { Text(text = "Surname", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    label = { Text(text = "Surname", fontSize = REGISTRATION_TEXT_FONT_SIZE.sp) },
                     singleLine = true,
                     placeholder = {
                         Text(
                             text = "Enter your name",
-                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                            fontSize = REGISTRATION_TEXT_FONT_SIZE.sp
                         )
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
-                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                    textStyle = TextStyle(fontSize = REGISTRATION_TEXT_FONT_SIZE.sp),
                 )
             }
             Column(
@@ -122,18 +122,18 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                 TextField(
                     value = viewModel.state.email,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.EmailChanged(it)) },
-                    label = { Text(text = "Email", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    label = { Text(text = "Email", fontSize = REGISTRATION_TEXT_FONT_SIZE.sp) },
                     singleLine = true,
                     placeholder = {
                         Text(
                             text = "Enter your Email",
-                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                            fontSize = REGISTRATION_TEXT_FONT_SIZE.sp
                         )
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
-                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                    textStyle = TextStyle(fontSize = REGISTRATION_TEXT_FONT_SIZE.sp),
                 )
             }
             Column(
@@ -142,21 +142,21 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                 TextField(
                     value = viewModel.state.password,
                     onValueChange = { viewModel.onEvent(AuthUiEvent.PasswordChanged(it)) },
-                    label = { Text(text = "Password", fontSize =REGISTRATION_TEXT_FONT_SIZE.sp) },
+                    label = { Text(text = "Password", fontSize = REGISTRATION_TEXT_FONT_SIZE.sp) },
                     singleLine = true,
                     placeholder = {
                         Text(
                             text = "Enter your Password",
-                            fontSize =REGISTRATION_TEXT_FONT_SIZE.sp
+                            fontSize = REGISTRATION_TEXT_FONT_SIZE.sp
                         )
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 10.dp),
-                    textStyle = TextStyle(fontSize =REGISTRATION_TEXT_FONT_SIZE.sp),
+                    textStyle = TextStyle(fontSize = REGISTRATION_TEXT_FONT_SIZE.sp),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    )
+                )
             }
             Column(
                 modifier = Modifier.padding(10.dp)
@@ -177,7 +177,10 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                         .fillMaxWidth()
                         .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.sign_up), fontSize = BUTTON_FONT_SIZE.sp)
+                    Text(
+                        text = stringResource(id = R.string.sign_up),
+                        fontSize = BUTTON_FONT_SIZE.sp
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -185,12 +188,15 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = stringResource(id = R.string.or), fontSize =REGISTRATION_TEXT_FONT_SIZE.sp)
+                    Text(
+                        text = stringResource(id = R.string.or),
+                        fontSize = REGISTRATION_TEXT_FONT_SIZE.sp
+                    )
                 }
                 Button(
                     onClick = {
-                        navController.navigate(Screen.Login.route){
-                            popUpTo(Screen.Register.route){
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(Screen.Register.route) {
                                 inclusive = true
                             }
                         }
@@ -203,7 +209,10 @@ fun Register(navController: NavController, viewModel: MainViewModel = hiltViewMo
                         .fillMaxWidth()
                         .height(BUTTON_HEIGHT.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.sign_in), fontSize = BUTTON_FONT_SIZE.sp)
+                    Text(
+                        text = stringResource(id = R.string.sign_in),
+                        fontSize = BUTTON_FONT_SIZE.sp
+                    )
                 }
             }
         }

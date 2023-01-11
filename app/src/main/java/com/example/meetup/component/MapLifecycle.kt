@@ -6,23 +6,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.core.content.res.ResourcesCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import com.example.meetup.location.MarkerManager
+import com.example.meetup.view_model.EventViewModel
 import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.CopyrightOverlay
-import org.osmdroid.views.overlay.gestures.RotationGestureOverlay
+import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import com.example.meetup.view_model.EventViewModel
-import org.osmdroid.events.MapEventsReceiver
-import org.osmdroid.views.overlay.MapEventsOverlay
-import org.osmdroid.views.overlay.Marker
 
 object MapConsts {
     const val RYNEK_LAT = 51.110150
@@ -32,7 +27,10 @@ object MapConsts {
 
 
 @Composable
-fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel, navController: NavController): MapView {
+fun rememberMapViewWithLifecycle(
+    eventViewModel: EventViewModel,
+    navController: NavController
+): MapView {
     // Getting events
     LaunchedEffect(Unit, block = {
         eventViewModel.getEventsList(MapConsts.RYNEK_LAT, MapConsts.RYNEK_LON)      // TODO ?

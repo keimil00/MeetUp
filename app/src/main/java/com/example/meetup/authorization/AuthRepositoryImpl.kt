@@ -9,7 +9,7 @@ import retrofit2.HttpException
 class AuthRepositoryImpl(
     private val api: AuthApi,
     private val prefs: SharedPreferences
-): AuthRepository {
+) : AuthRepository {
 
     override suspend fun signUp(registrationRequest: RegistrationRequest): AuthResult<Unit> {
         return try {
@@ -19,7 +19,10 @@ class AuthRepositoryImpl(
                 request = registrationRequest
             )
 
-            val token = Base64.encodeToString("${registrationRequest.email}:${registrationRequest.password}".toByteArray(), Base64.NO_WRAP)
+            val token = Base64.encodeToString(
+                "${registrationRequest.email}:${registrationRequest.password}".toByteArray(),
+                Base64.NO_WRAP
+            )
 
             prefs.edit()
                 .putString("jwt", token)
@@ -28,8 +31,8 @@ class AuthRepositoryImpl(
             // AuthResult.Authorized()
             authenticate()
 //            signIn(username, password)
-        } catch(e: HttpException) {
-            if(e.code() == 401) {
+        } catch (e: HttpException) {
+            if (e.code() == 401) {
                 println(e.message())
                 AuthResult.Unauthorized()
             } else {
@@ -52,8 +55,8 @@ class AuthRepositoryImpl(
                 .apply()
             //api.authenticate()      // added as workaround by Szymon
             AuthResult.Authorized()
-        } catch(e: HttpException) {
-            if(e.code() == 401) {
+        } catch (e: HttpException) {
+            if (e.code() == 401) {
                 AuthResult.Unauthorized()
             } else {
                 AuthResult.UnknownError()
@@ -67,8 +70,8 @@ class AuthRepositoryImpl(
         return try {
             api.authenticate()
             AuthResult.Authorized()
-        } catch(e: HttpException) {
-            if(e.code() == 401) {
+        } catch (e: HttpException) {
+            if (e.code() == 401) {
                 println(e.message())
                 AuthResult.Unauthorized()
             } else {

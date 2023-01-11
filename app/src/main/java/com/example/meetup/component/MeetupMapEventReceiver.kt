@@ -6,7 +6,7 @@ import com.example.meetup.navigation.Screen
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.util.GeoPoint
 
-class MeetupMapEventReceiver(var navController: NavController): MapEventsReceiver  {
+class MeetupMapEventReceiver(var navController: NavController) : MapEventsReceiver {
     override fun longPressHelper(p: GeoPoint?): Boolean {
         ClickedLocationStore.wasClicked = true
         ClickedLocationStore.clickedLatitude = p?.latitude ?: 1.23

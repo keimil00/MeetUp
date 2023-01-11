@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meetup.authorization.AuthRepository
 import com.example.meetup.authorization.AuthResult
-import com.example.meetup.event.AuthUiEvent
 import com.example.meetup.authorization.UserState
 import com.example.meetup.authorization.dto.RegistrationRequest
+import com.example.meetup.event.AuthUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(UserState())
 
@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun onEvent(event: AuthUiEvent) {
-        when(event) {
+        when (event) {
             is AuthUiEvent.EmailChanged -> {
                 state = state.copy(email = event.value)
             }

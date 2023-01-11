@@ -2,24 +2,20 @@ package com.example.meetup.component
 
 import android.Manifest
 import androidx.compose.material.ScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import com.example.meetup.BuildConfig
-import com.madhu.locationpermission.permission.PermissionUI
+import com.example.meetup.R
+import com.example.meetup.location.permission.PermissionAction
+import com.example.meetup.view_model.EventViewModel
+import com.example.meetup.view_model.PermissionTestViewModel
+import com.example.meetup.location.permission.PermissionUI
 import org.osmdroid.config.Configuration
 import org.osmdroid.views.MapView
-import com.example.meetup.view_model.PermissionTestViewModel
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import com.example.meetup.location.permission.PermissionAction
-import androidx.compose.runtime.*
-import androidx.navigation.NavController
-import com.example.meetup.R
-import com.example.meetup.view_model.EventViewModel
 
 @Composable
 fun MapView(

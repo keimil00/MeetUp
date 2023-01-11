@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FriendsViewModel @Inject constructor(
     private val api: FriendsApi
-): ViewModel() {
+) : ViewModel() {
     private val _friendsList = mutableStateListOf<Friend>()
     val friendsList: SnapshotStateList<Friend>
         get() = _friendsList
@@ -49,11 +49,10 @@ class FriendsViewModel @Inject constructor(
                 api.addFriend(email)
                 resultChannel.send(true)
                 async { waitForResult() }
-            }catch (e: HttpException) {
+            } catch (e: HttpException) {
                 errorChannel.send(handleError(e.code()))
                 resultChannel.send(false)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 resultChannel.send(false)
             }
@@ -75,7 +74,7 @@ class FriendsViewModel @Inject constructor(
     }
 
     private fun handleError(errCode: Int): UiText {
-        return when (errCode){
+        return when (errCode) {
             404 -> {
                 UiText.StringResource(R.string.user_not_found)
             }

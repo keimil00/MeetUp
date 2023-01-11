@@ -100,7 +100,11 @@ fun TitleAndButton(title: String, dialogState: MutableState<Boolean>) {
 }
 
 @Composable
-private fun BottomButtons(dialogState: MutableState<Boolean>, email: MutableState<String>, friendsViewModel: FriendsViewModel = hiltViewModel()) {
+private fun BottomButtons(
+    dialogState: MutableState<Boolean>,
+    email: MutableState<String>,
+    friendsViewModel: FriendsViewModel = hiltViewModel()
+) {
 
     Row(
         modifier = Modifier
@@ -148,14 +152,16 @@ private fun AddBody(email: MutableState<String>, errMsg: MutableState<String>) {
         modifier = Modifier
             .padding(20.dp)
     ) {
-        TextField (
+        TextField(
             value = email.value,
             onValueChange = { email.value = it },
             label = { Text(text = stringResource(id = R.string.enter_email)) },
-            supportingText = { Text(
-                text = errMsg.value,
-                color = MaterialTheme.colorScheme.error,
-            ) },
+            supportingText = {
+                Text(
+                    text = errMsg.value,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            },
         )
     }
 }

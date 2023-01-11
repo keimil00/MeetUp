@@ -1,8 +1,6 @@
 package com.example.meetup.authorization
 
 import android.content.SharedPreferences
-import com.example.meetup.AppModule
-import com.example.meetup.MeetUpApp
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

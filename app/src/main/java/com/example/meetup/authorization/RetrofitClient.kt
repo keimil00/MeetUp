@@ -17,9 +17,9 @@ class RetrofitClient @Inject constructor(
         Retrofit.Builder()
             .client(
                 OkHttpClient()
-                .newBuilder()
-                .addInterceptor(authInterceptor)
-                .build()
+                    .newBuilder()
+                    .addInterceptor(authInterceptor)
+                    .build()
             )
             .baseUrl(HttpRoutes.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create())

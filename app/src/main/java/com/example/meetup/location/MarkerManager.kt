@@ -3,7 +3,6 @@ package com.example.meetup.location
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.ScaleDrawable
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
 import com.example.meetup.R
@@ -17,8 +16,8 @@ class MarkerManager {
     companion object {
         private fun prepareDrawable(context: Context, colorString: String): Drawable? {
             val image = ContextCompat.getDrawable(context, R.drawable.custom_marker40)
-                ?.getConstantState()
-                ?.newDrawable()?.mutate();
+                ?.constantState
+                ?.newDrawable()?.mutate()
 
 
             val colorARGB: Int = ColorPalette.Primary.get(colorString.toInt()).toArgb()

@@ -4,7 +4,10 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -54,7 +57,12 @@ fun AboutApp(navController: NavController) {
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = stringResource(id = R.string.app_name), textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth(), fontSize = 40.sp)
+                        Text(
+                            text = stringResource(id = R.string.app_name),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth(),
+                            fontSize = 40.sp
+                        )
                     }
                     Spacer(modifier = Modifier.size(10.dp))
                     Row(
@@ -63,7 +71,11 @@ fun AboutApp(navController: NavController) {
                             .padding(start = 4.dp, end = 4.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = stringResource(id = R.string.about_app_description), textAlign = TextAlign.Center,  modifier = Modifier.fillMaxWidth())
+                        Text(
+                            text = stringResource(id = R.string.about_app_description),
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                     Spacer(modifier = Modifier.size(10.dp))
                 }

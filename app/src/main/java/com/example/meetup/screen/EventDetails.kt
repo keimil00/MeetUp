@@ -23,9 +23,7 @@ import com.example.meetup.component.Drawer
 import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.FriendsViewModel
 import com.example.meetup.view_model.UserViewModel
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 @Composable
 fun EventDetails(
     navController: NavController,
@@ -39,32 +37,28 @@ fun EventDetails(
     })
     val displayedEvent = eventViewModel.getEventById(eventId)
 
-    var ownerFirstName: String
-    var ownerSurname: String
-    var ownerId = displayedEvent?.ownerId
-    var selfCreated: Boolean
+    val ownerFirstName: String
+    val ownerSurname: String
+    val selfCreated: Boolean
 
     // Check if event was created by this user, or his friend
     if (displayedEvent?.ownerId == userViewModel.currentUser.id) {
         ownerFirstName = userViewModel.currentUser.firstName
         ownerSurname = userViewModel.currentUser.lastName
         selfCreated = true
-    }
-    else {
+    } else {
         ownerFirstName = friendsViewModel.getFriendById(displayedEvent?.ownerId)?.firstName ?: ""
         ownerSurname = friendsViewModel.getFriendById(displayedEvent?.ownerId)?.firstName ?: ""
         selfCreated = false
     }
-    var formattedDuration: String
-    if (displayedEvent?.durationInSeconds != null) {
-        formattedDuration = String.format(
+    val formattedDuration: String = if (displayedEvent?.durationInSeconds != null) {
+        String.format(
             "This event will last for %02d:%02d",
-            displayedEvent?.durationInSeconds / 3600,
-            (displayedEvent?.durationInSeconds % 3600) / 60,
+            displayedEvent.durationInSeconds / 3600,
+            (displayedEvent.durationInSeconds % 3600) / 60,
         )
-    }
-    else {
-        formattedDuration = String.format(
+    } else {
+        String.format(
             "This event will last for %02d:%02d",
             0,
             30,
@@ -138,10 +132,9 @@ fun EventDetails(
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.fillMaxWidth()
                             )
-                        }
-                        else {
+                        } else {
                             Text(
-                                text = "${ownerFirstName} ${ownerSurname} invited you",
+                                text = "$ownerFirstName $ownerSurname invited you",
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.fillMaxWidth()
                             )
