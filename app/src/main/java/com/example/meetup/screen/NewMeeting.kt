@@ -327,11 +327,6 @@ fun NewMeeting(navController: NavController, eventViewModel: EventViewModel = hi
                                         )
                                     }
 //Cancel/Submit buttons
-/*
-LaunchedEffect(Unit, block = {
-        userViewModel.getCurrentUser()
-}
-)*/
                                     Row(
                                         modifier = Modifier
                                             .padding(16.dp)
@@ -345,18 +340,18 @@ LaunchedEffect(Unit, block = {
                                         }
                                         Button(onClick = {
                                             eventViewModel.createEvent(
-                                                NewEventRequestBody(
-                                                    name = title,
-                                                    date = pickedDate.atTime(pickedTime).toString(),
-                                                    durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
-                                                    latitude = LocationStore.storedLatitude,
-                                                    longitude = LocationStore.storedLongitude,
-                                                    description = description,
-                                                    color = pickedColor.toString()
-                                                )
-                                            )
-                                            //TODO: add participants... and getting long- and latitude
-                                        }) {
+                                             NewEventRequestBody(
+                                                name = title,
+                                                date = pickedDate.atTime(pickedTime).toString(),
+                                                durationInSeconds = pickedDurationTime.hours * 3600 + pickedDurationTime.minutes * 60,
+                                                latitude = LocationStore.storedLatitude,
+                                                longitude = LocationStore.storedLongitude,
+                                                description = description,
+                                                color = pickedColor.toString()
+                                            ))
+                                            //TODO: add participants...
+                                            navController.navigate(Screen.Home.route)
+                                        })  {
                                             Text(text = "Submit")
                                         }
                                     }

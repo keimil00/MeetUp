@@ -7,7 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.meetup.model.Friend
 import com.example.meetup.screen.*
+import kotlin.reflect.typeOf
 
 
 @Composable
@@ -35,8 +37,29 @@ fun Navigation() {
         composable(route = Screen.Home.route) {
             Home(navController = navController)
         }
-        composable(route = Screen.Profile.route){
-            Profile(navController = navController)
+        composable(route = Screen.Profile.route,
+            arguments = listOf(
+                navArgument("friendUsername"){
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("friendFirstName"){
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("friendSurname"){
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
+            ){
+                navBackStackEntry ->
+            val args = navBackStackEntry.arguments
+            val friendUsername = args?.getString("eventId")
+            val friendFirstname = args?.getString("friendFirstName")
+            val friendSurname = args?.getString("friendSurname")
+
+            Profile(navController = navController, friendUsername, friendFirstname, friendSurname)
         }
         composable(route = Screen.Friends.route){
             Friends(navController = navController)

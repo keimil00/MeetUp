@@ -5,7 +5,11 @@ sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Register: Screen("activity_register")
     object Home: Screen("home")
-    object Profile: Screen("profile")
+    object Profile: Screen("profile"){
+        val friendUsername = "friendUsername"
+        val friendFirstName = "friendFirstName"
+        val friendSurname = "friendSurname"
+    }
     object Friends: Screen("friends")
     object NewMeeting: Screen("new_meeting")
     object AboutApp: Screen("about_app")
