@@ -79,7 +79,15 @@ fun rememberMapViewWithLifecycle(eventViewModel: EventViewModel): MapView {
 
     // overlay markers from api
     for (event in eventViewModel.eventsList) {
-        val createdMarker = MarkerManager.createMarker(mapView, event.latitude, event.longitude, event.name, event.description)
+        val createdMarker = MarkerManager.createMarker(
+            mapView,
+            event.latitude,
+            event.longitude,
+            event.name,
+            event.description,
+            event.color,
+            LocalContext.current
+        )
         mapView.overlays.add(createdMarker)
     }
 

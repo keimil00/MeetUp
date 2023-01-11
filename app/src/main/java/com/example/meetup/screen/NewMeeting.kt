@@ -347,7 +347,7 @@ fun NewMeeting(navController: NavController, eventViewModel: EventViewModel = hi
                                                 latitude = LocationStore.storedLatitude,
                                                 longitude = LocationStore.storedLongitude,
                                                 description = description,
-                                                color = pickedColor.toString()
+                                                color = pickedColorInt.toString()
                                             ))
                                             //TODO: add participants...
                                             navController.navigate(Screen.Home.route)
