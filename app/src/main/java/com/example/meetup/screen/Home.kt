@@ -71,7 +71,7 @@ fun Home(
                 sheetContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 floatingActionButton = {
                     FloatingActionButton(
-                        modifier = Modifier.absoluteOffset(x = 0.dp, y = (-100).dp),
+                        modifier = Modifier.absoluteOffset(x = 0.dp, y = (-40).dp),
                         onClick = {
                             navController.navigate(
                                 Screen.NewMeeting.route
@@ -86,21 +86,6 @@ fun Home(
                             tint = MaterialTheme.colorScheme.onPrimary,
                             contentDescription = "Localized description",
                             modifier = Modifier.size(30.dp)
-                        )
-                    }
-
-                    FloatingActionButton(
-                        modifier = Modifier.absoluteOffset(x = 0.dp, y = (-35).dp),
-                        onClick = {
-                            // TODO: something with map
-                        },
-                        shape = MaterialTheme.shapes.medium,
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    ) {
-                        Icon(
-                            Icons.Default.NearMe,
-                            contentDescription = "Localized description"
                         )
                     }
                 },
