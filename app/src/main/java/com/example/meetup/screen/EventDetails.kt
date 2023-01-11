@@ -20,11 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
-import com.example.meetup.model.Event
 import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.FriendsViewModel
 import com.example.meetup.view_model.UserViewModel
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
@@ -110,7 +108,8 @@ fun EventDetails(
                             text = displayedEvent?.name ?: "",
                             textAlign = TextAlign.Center,
                             modifier = Modifier.fillMaxWidth(),
-                            fontSize = 40.sp
+                            fontSize = 40.sp,
+                            lineHeight = 40.sp,
                         )
 
                     }
