@@ -1,5 +1,6 @@
 package com.example.meetup.screen
 
+import android.content.pm.ActivityInfo
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -21,9 +22,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
+import com.example.meetup.ui_utils.LockScreenOrientation
 
 @Composable
 fun AboutApp(navController: NavController) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     Drawer(navController = navController, title = stringResource(id = R.string.about_app)) {
         Box(modifier = Modifier.fillMaxSize())
         {

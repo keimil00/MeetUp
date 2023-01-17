@@ -1,6 +1,7 @@
 package com.example.meetup.screen
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,6 +32,7 @@ import com.example.meetup.component.MapView
 import com.example.meetup.location.LocationStore
 import com.example.meetup.model.Event
 import com.example.meetup.navigation.Screen
+import com.example.meetup.ui_utils.LockScreenOrientation
 import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.PermissionTestViewModel
 
@@ -45,6 +47,8 @@ fun Home(
     navController: NavController,
     eventViewModel: EventViewModel = hiltViewModel(),
 ) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+    
     val context = LocalContext.current
 
     // create a store for user location

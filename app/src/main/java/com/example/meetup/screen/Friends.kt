@@ -1,6 +1,7 @@
 package com.example.meetup.screen
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -30,11 +31,14 @@ import com.example.meetup.component.AddFriendDialog
 import com.example.meetup.component.Drawer
 import com.example.meetup.model.Friend
 import com.example.meetup.navigation.Screen
+import com.example.meetup.ui_utils.LockScreenOrientation
 import com.example.meetup.view_model.FriendsViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Friends(navController: NavController, friendsViewModel: FriendsViewModel = hiltViewModel()) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     LaunchedEffect(Unit, block = {
         friendsViewModel.getFriendsList()
     })

@@ -1,5 +1,6 @@
 package com.example.meetup.screen
 
+import android.content.pm.ActivityInfo
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
+import com.example.meetup.ui_utils.LockScreenOrientation
 import com.example.meetup.view_model.EventViewModel
 import com.example.meetup.view_model.FriendsViewModel
 import com.example.meetup.view_model.UserViewModel
@@ -32,6 +34,8 @@ fun EventDetails(
     friendsViewModel: FriendsViewModel = hiltViewModel(),
     userViewModel: UserViewModel = hiltViewModel()
 ) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     LaunchedEffect(Unit, block = {
         userViewModel.getCurrentUser()
     })

@@ -1,6 +1,7 @@
 package com.example.meetup.screen
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -31,6 +32,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.meetup.R
 import com.example.meetup.component.Drawer
 import com.example.meetup.navigation.Screen
+import com.example.meetup.ui_utils.LockScreenOrientation
 import com.example.meetup.view_model.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -43,6 +45,8 @@ fun Profile(
     friendIconId: String? = null,
     userViewModel: UserViewModel = hiltViewModel()
 ) {//, user : User) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     LaunchedEffect(Unit, block = {
         userViewModel.getCurrentUser()
     })

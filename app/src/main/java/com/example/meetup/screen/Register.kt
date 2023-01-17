@@ -1,6 +1,7 @@
 package com.example.meetup.screen
 
 
+import android.content.pm.ActivityInfo
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -24,6 +25,7 @@ import com.example.meetup.R
 import com.example.meetup.authorization.AuthResult
 import com.example.meetup.event.AuthUiEvent
 import com.example.meetup.navigation.Screen
+import com.example.meetup.ui_utils.LockScreenOrientation
 import com.example.meetup.view_model.MainViewModel
 
 const val REGISTRATION_TEXT_FONT_SIZE = 15
@@ -31,6 +33,8 @@ const val REGISTRATION_TEXT_FONT_SIZE = 15
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Register(navController: NavController, viewModel: MainViewModel = hiltViewModel()) {
+    LockScreenOrientation(orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+
     val context = LocalContext.current
 
     LaunchedEffect(viewModel, context) {
