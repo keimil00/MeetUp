@@ -26,3 +26,34 @@ interface EventsApi {
         @Body participants: List<Int>
     )
 }
+
+const val MOCK_OWNER_ID = 230
+
+class MockEventsApi(private var mockEventsList: MutableList<Event>) : EventsApi {
+
+    override suspend fun createEvent(request: NewEventRequestBody): Int {
+        val idToAdd = mockEventsList[mockEventsList.lastIndex].id + 1
+
+        val newEvent = Event(
+            idToAdd,
+            request.name,
+            MOCK_OWNER_ID,
+            request.date,
+            request.durationInSeconds,
+            request.latitude,
+            request.longitude,
+            request.description,
+            request.color
+        )
+
+        mockEventsList.add(newEvent)
+        return idToAdd
+    }
+
+    override suspend fun getEvents(latitude: Double, longitude: Double): List<Event> {
+        return mockEventsList
+    }
+
+    override suspend fun addParticipants(eventId: Int, participants: List<Int>) {
+    }
+}
