@@ -16,3 +16,21 @@ interface FriendsApi {
     @GET(HttpRoutes.GET_FRIENDS)
     suspend fun getFriends(): List<Friend>
 }
+
+class MockFriendsApi(private var mockFriendsList: MutableList<Friend>) : FriendsApi {
+
+
+    override suspend fun addFriend(friendEmail: String) {
+        val newFriend = Friend(
+            mockFriendsList[mockFriendsList.lastIndex].id + 1,
+            "Jan",
+            "Kowalski",
+            friendEmail
+        )
+        mockFriendsList.add(newFriend)
+    }
+
+    override suspend fun getFriends(): List<Friend> {
+        return mockFriendsList
+    }
+}
