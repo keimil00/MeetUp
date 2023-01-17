@@ -1,5 +1,6 @@
 package com.example.meetup.vmtests
 
+import com.example.meetup.MainCoroutineRule
 import com.example.meetup.api.MockFriendsApi
 import com.example.meetup.view_model.FriendsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

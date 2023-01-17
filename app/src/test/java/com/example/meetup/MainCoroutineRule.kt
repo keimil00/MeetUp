@@ -1,4 +1,4 @@
-package com.example.meetup.vmtests
+package com.example.meetup
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
