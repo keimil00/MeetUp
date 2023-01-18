@@ -60,7 +60,7 @@ fun Profile(
             lastName = friendSurname!!
         }
 
-        Text(text = "Profile")
+        Text(text = "Profil")
         Box(modifier = Modifier.fillMaxSize())
         {
             Card(
@@ -86,7 +86,7 @@ fun Profile(
                         .verticalScroll(rememberScrollState())
                         .padding(8.dp)
                 ) {
-                    ProfileImage(friendIconId)
+                    ProfileImage(friendIconId, userViewModel)
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -126,7 +126,7 @@ fun Profile(
                             .fillMaxWidth()
                             .height(BUTTON_HEIGHT.dp)
                     ) {
-                        Text(text = "Friends", fontSize = BUTTON_FONT_SIZE.sp)
+                        Text(text = "See friends", fontSize = BUTTON_FONT_SIZE.sp)
                     }
                 }
             }

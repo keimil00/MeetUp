@@ -44,6 +44,6 @@ class FriendsViewModelTest {
     }
 
     companion object {
-        val initialList = mutableListOf(mockFriend1, mockFriend2, mockFriend3)
+       // val initialList = mutableListOf(mockFriend1, mockFriend2, mockFriend3)
     }
 }
