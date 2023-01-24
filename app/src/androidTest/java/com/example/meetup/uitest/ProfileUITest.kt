@@ -28,7 +28,7 @@ class ProfileUITest {
 
 
     @Test
-    fun ProfileUI_CheckDisplayingContent_ClickableOptions() {
+    fun profileUI_CheckDisplayingContent_ClickableOptions() {
         // Start the app
         composeTestRule.setContent {
             Profile(navController = rememberNavController(), userViewModel = viewModel)
@@ -40,7 +40,29 @@ class ProfileUITest {
 
         composeTestRule.onNodeWithText("See friends").assertHasClickAction()
 
-        composeTestRule.onNodeWithText("See friends").performClick()
+        composeTestRule.onNodeWithText("See friends").performClick().assertExists()
+
+        //composeTestRule.onAllNodes()
+    }
+    @Test
+    fun profileUI_CheckDisplaying() {
+        // Start the app
+        composeTestRule.setContent {
+            Profile(navController = rememberNavController(), userViewModel = viewModel)
+        }
+        //composeTestRule.onAllNodes()
+
+        composeTestRule.onNodeWithText("See friends").assertHasClickAction()
+
+        //composeTestRule.onAllNodes()
+    }
+    @Test
+    fun profileUI_ClickableOptions() {
+        // Start the app
+        composeTestRule.setContent {
+            Profile(navController = rememberNavController(), userViewModel = viewModel)
+        }
+        composeTestRule.onNodeWithText("See friends").performClick().assertExists()
 
         //composeTestRule.onAllNodes()
     }
