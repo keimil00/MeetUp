@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.meetup.model.MenuItem
@@ -90,7 +91,9 @@ fun Drawer(
                                 titleContentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                             ),
                             navigationIcon = {
-                                androidx.compose.material3.IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                                androidx.compose.material3.IconButton(
+                                    modifier = Modifier.testTag("Menu icon button"),
+                                    onClick = { scope.launch { drawerState.open() } }) {
                                     Icon(
                                         imageVector = Icons.Default.Menu,
                                         contentDescription = "Menu"

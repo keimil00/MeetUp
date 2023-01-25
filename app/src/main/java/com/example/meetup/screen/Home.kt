@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -75,7 +76,7 @@ fun Home(
                 sheetContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 floatingActionButton = {
                     FloatingActionButton(
-                        modifier = Modifier.absoluteOffset(x = 0.dp, y = (-40).dp),
+                        modifier = Modifier.absoluteOffset(x = 0.dp, y = (-40).dp).testTag("Main home FAB"),
                         onClick = {
                             navController.navigate(
                                 Screen.NewMeeting.route

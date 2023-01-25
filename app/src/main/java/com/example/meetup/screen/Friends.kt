@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -79,7 +80,8 @@ fun Friends(navController: NavController, friendsViewModel: FriendsViewModel = h
                     onClick = { dialogState.value = true },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(16.dp),
+                        .padding(16.dp)
+                        .testTag("Friends FAB"),
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = MaterialTheme.shapes.medium,
@@ -94,7 +96,7 @@ fun Friends(navController: NavController, friendsViewModel: FriendsViewModel = h
                     modifier = Modifier
                         .padding(8.dp)
                 ) {
-                    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                    LazyColumn(modifier = Modifier.fillMaxWidth().testTag("Friends list column")) {
                         items(friendsViewModel.friendsList) { friend ->
                             FriendListItem(navController = navController, friend = friend)
                         }

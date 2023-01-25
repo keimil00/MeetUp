@@ -12,7 +12,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.node.modifierElementOf
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,7 +71,7 @@ fun AddFriendDialog(
         ) {
             TitleAndButton(title, dialogState)
             AddBody(email, errorMessage)
-            BottomButtons(dialogState = dialogState, email = email)
+            BottomButtons(dialogState = dialogState, email = email, friendsViewModel = friendsViewModel)
         }
     }
 }
@@ -153,6 +155,7 @@ private fun AddBody(email: MutableState<String>, errMsg: MutableState<String>) {
             .padding(20.dp)
     ) {
         TextField(
+            modifier = Modifier.testTag("Add friend TextField"),
             value = email.value,
             onValueChange = { email.value = it },
             label = { Text(text = stringResource(id = R.string.enter_email)) },

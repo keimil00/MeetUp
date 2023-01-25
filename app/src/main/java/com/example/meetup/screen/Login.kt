@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -154,7 +155,8 @@ fun Login(navController: NavController, viewModel: MainViewModel = hiltViewModel
                 ) {
                     Text(
                         text = stringResource(id = R.string.sign_in),
-                        fontSize = BUTTON_FONT_SIZE.sp
+                        fontSize = BUTTON_FONT_SIZE.sp,
+                        modifier = Modifier.testTag("Login button")
                     )
                 }
                 Column(

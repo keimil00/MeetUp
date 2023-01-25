@@ -50,11 +50,8 @@ class ProfileUITest {
         composeTestRule.setContent {
             Profile(navController = rememberNavController(), userViewModel = viewModel)
         }
-        //composeTestRule.onAllNodes()
 
         composeTestRule.onNodeWithText("See friends").assertHasClickAction()
-
-        //composeTestRule.onAllNodes()
     }
     @Test
     fun profileUI_ClickableOptions() {
@@ -63,7 +60,5 @@ class ProfileUITest {
             Profile(navController = rememberNavController(), userViewModel = viewModel)
         }
         composeTestRule.onNodeWithText("See friends").performClick().assertExists()
-
-        //composeTestRule.onAllNodes()
     }
 }
